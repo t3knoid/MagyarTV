@@ -1,6 +1,6 @@
 ﻿namespace MagyarTV
 {
-    partial class Form1
+    partial class VideoPlayerForm
     {
         /// <summary>
         /// Required designer variable.
