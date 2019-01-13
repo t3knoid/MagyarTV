@@ -8,10 +8,10 @@ namespace MagyarTV
 {
     class Channels
     {
-        public string Channel_M1 { get; set; }
-        public string Channel_M2 { get; set; }
-        public string Channel_Duna { get; set; }
-        public string Channel_DunaWorld { get; set; }
+        public Channel Channel_M1 { get; set; }
+        public Channel Channel_M2 { get; set; }
+        public Channel Channel_Duna { get; set; }
+        public Channel Channel_DunaWorld { get; set; }
 
         public Channels()
         { }
