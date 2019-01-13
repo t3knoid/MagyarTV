@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MagyarTV
 {
-    class Channel
+    public class Channel
     {
         public string Name { get; set; }
         public string ID { get; set; }

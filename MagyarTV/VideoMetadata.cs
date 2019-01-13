@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MagyarTV
 {
-    class VideoMetadata
+    public class VideoMetadata
     {
         public DateTime DateRecorded { get; set; }
         public string Title { get; set; }

@@ -2,10 +2,24 @@
 from six.moves.urllib.parse import urlparse
 from six.moves.urllib.parse import urljoin
 from lxml import html
+import sys, getopt
 
+index_feed = None
 
+try:
+    opts, args = getopt.getopt(sys.argv[1:],"hi:",["ifile="])
+except getopt.GetoptError:
+    print ('getURI.py -i <inputfile>')
+    sys.exit(2)
+for opt, arg in opts:
+    if opt == '-h':
+        print ('test.py -i <inputfile>')
+        sys.exit()
+    elif opt in ("-i", "--ifile"):
+        index_feed = arg
+        
 search_str = "\/index.m3u8"
-index_feed = 'https://player.mediaklikk.hu/playernew/player.php?video=mtv2live'
+# index_feed = 'https://player.mediaklikk.hu/playernew/player.php?video=mtv2live'
 high_res_m3u = "02.m3u8"
 
 # Read index feed

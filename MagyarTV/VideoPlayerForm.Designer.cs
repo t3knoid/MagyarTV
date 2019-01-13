@@ -155,6 +155,7 @@
             this.btM1.TabIndex = 0;
             this.btM1.Text = "M1";
             this.btM1.UseVisualStyleBackColor = true;
+            this.btM1.Click += new System.EventHandler(this.btM1_Click);
             // 
             // btM2
             // 
@@ -164,6 +165,7 @@
             this.btM2.TabIndex = 1;
             this.btM2.Text = "M2";
             this.btM2.UseVisualStyleBackColor = true;
+            this.btM2.Click += new System.EventHandler(this.btM2_Click);
             // 
             // btDuna
             // 
@@ -173,6 +175,7 @@
             this.btDuna.TabIndex = 2;
             this.btDuna.Text = "Duna";
             this.btDuna.UseVisualStyleBackColor = true;
+            this.btDuna.Click += new System.EventHandler(this.btDuna_Click);
             // 
             // btDunaWorld
             // 
@@ -182,6 +185,7 @@
             this.btDunaWorld.TabIndex = 3;
             this.btDunaWorld.Text = "Duna World";
             this.btDunaWorld.UseVisualStyleBackColor = true;
+            this.btDunaWorld.Click += new System.EventHandler(this.btDunaWorld_Click);
             // 
             // menuStrip1
             // 
@@ -284,7 +288,7 @@
             this.mediaPlayer.VlcMediaplayerOptions = null;
             this.mediaPlayer.VlcLibDirectoryNeeded += new System.EventHandler<Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs>(this.vlcControl2_VlcLibDirectoryNeeded);
             // 
-            // Form1
+            // VideoPlayerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -294,7 +298,7 @@
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "VideoPlayerForm";
             this.Text = "Form1";
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);

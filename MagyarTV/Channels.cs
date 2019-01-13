@@ -6,15 +6,28 @@ using System.Threading.Tasks;
 
 namespace MagyarTV
 {
-    class Channels
+    static public class Channels
     {
-        public Channel Channel_M1 { get; set; }
-        public Channel Channel_M2 { get; set; }
-        public Channel Channel_Duna { get; set; }
-        public Channel Channel_DunaWorld { get; set; }
+        static public Channel M1 => new Channel()
+        {
+            IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv1live",
+            Name = "M1",
+        };
 
-        public Channels()
-        { }
-        
+        static public Channel M2 => new Channel()
+        {
+            IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv2live",
+            Name = "M2",
+        };
+        static public Channel Duna => new Channel()
+        {
+            IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=dunalive",
+            Name = "Duna",
+        };
+        static public Channel DunaWorld => new Channel()
+        {
+            IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=dunaworldlive",
+            Name = "Duna",
+        };        
     }
 }
