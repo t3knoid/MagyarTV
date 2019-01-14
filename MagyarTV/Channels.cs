@@ -19,6 +19,16 @@ namespace MagyarTV
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv2live",
             Name = "M2",
         };
+        static public Channel M4 => new Channel()
+        {
+            IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv4live",
+            Name = "M4",
+        };
+        static public Channel M5 => new Channel()
+        {
+            IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv5live",
+            Name = "M5",
+        };
         static public Channel Duna => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=dunalive",

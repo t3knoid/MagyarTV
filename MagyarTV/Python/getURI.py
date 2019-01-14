@@ -1,4 +1,13 @@
-﻿import requests
+﻿#
+# This parses a given video feed from Mediaklikk and
+# prints the corresponding URI video stream. This 
+# currently suppprots channels M1, M2, M4, M5, 
+# Duna, and Duna World. A configured Python3
+# environment is required to run this script.
+# See the environment.txt file for required
+# modules
+#
+import requests
 from six.moves.urllib.parse import urlparse
 from six.moves.urllib.parse import urljoin
 from lxml import html
@@ -16,10 +25,9 @@ for opt, arg in opts:
         print ('test.py -i <inputfile>')
         sys.exit()
     elif opt in ("-i", "--ifile"):
-        index_feed = arg
+        index_feed = arg 
         
 search_str = "\/index.m3u8"
-# index_feed = 'https://player.mediaklikk.hu/playernew/player.php?video=mtv2live'
 high_res_m3u = "02.m3u8"
 
 # Read index feed
@@ -50,12 +58,6 @@ high_res_video = urljoin(m3u8_index, high_res_m3u)
 print('%s' % high_res_video)
 
 # write to a file
-f = open ("m3u_url.txt","w")
-f.write(high_res_video)
-f.close
-
-#m3u8_index_pageContent=requests.get(
-#     m3u8_index
-#)
-#if pageContent.status_code == 200:
-#    print '%s' % m3u8_index_pageContent.content
+#f = open ("m3u_url.txt","w")
+#f.write(high_res_video)
+#f.close

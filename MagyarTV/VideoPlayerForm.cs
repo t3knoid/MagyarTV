@@ -37,7 +37,7 @@ namespace MagyarTV
         {
             currentChannel.URI = GetChannelURI(currentChannel);
             currentChannel.IsPlaying = true;
-            currentChannel.StreamInfo = new VideoMetadata() { Title = "Test video title" };
+            currentChannel.StreamInfo = new VideoMetadata() { Title = currentChannel.Name };
             mediaPlayer.Play(new Uri(currentChannel.URI.TrimEnd('\r', '\n')));
         }
 
@@ -149,7 +149,45 @@ namespace MagyarTV
             }
         }
 
-        private void btM1_Click(object sender, EventArgs e)
+
+        private void btChannel_Click(object sender, EventArgs e)
+        {
+            var channelName = (Button)sender;
+
+            switch (channelName.Text)
+            {
+                case "M1":
+                    currentChannel = Channels.M1;
+                    break;
+                case "M2":
+                    currentChannel = Channels.M2;
+                    break;
+                case "M4":
+                    currentChannel = Channels.M4;
+                    break;
+                case "M5":
+                    currentChannel = Channels.M5;
+                    break;
+                case "Duna":
+                    currentChannel = Channels.Duna;
+                    break;
+                    case "Duna World":
+                    currentChannel = Channels.DunaWorld;
+                    break;
+            }
+            if (currentChannel.IsRecording)
+            {
+                recordingWorker.CancelAsync(); // Stops recording thread
+            }
+            currentChannel.IsPlaying = false;
+            mediaPlayer.Stop();
+            currentChannel.URI = GetChannelURI(currentChannel);
+            currentChannel.IsPlaying = true;
+            currentChannel.StreamInfo = new VideoMetadata() { Title = currentChannel.Name };
+            mediaPlayer.Play(new Uri(currentChannel.URI.TrimEnd('\r', '\n')));
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (currentChannel.IsRecording)
             {
@@ -157,56 +195,45 @@ namespace MagyarTV
             }
             currentChannel.IsPlaying = false;
             mediaPlayer.Stop();
-            currentChannel = Channels.M1;
+            Application.Exit();
+        }
+
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (currentChannel.IsRecording)
+            {
+                recordingWorker.CancelAsync(); // Stops recording thread
+            }
+            currentChannel.IsPlaying = false;
+            mediaPlayer.Stop();
+        }
+
+        private void playToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             currentChannel.URI = GetChannelURI(currentChannel);
             currentChannel.IsPlaying = true;
             currentChannel.StreamInfo = new VideoMetadata() { Title = "Test video title" };
             mediaPlayer.Play(new Uri(currentChannel.URI.TrimEnd('\r', '\n')));
         }
 
-        private void btM2_Click(object sender, EventArgs e)
+        private void recordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (currentChannel.IsRecording)
-            {
-                recordingWorker.CancelAsync(); // Stops recording thread
-            }
-            currentChannel.IsPlaying = false;
-            mediaPlayer.Stop();
-            currentChannel = Channels.M2;
-            currentChannel.URI = GetChannelURI(currentChannel);
-            currentChannel.IsPlaying = true;
-            currentChannel.StreamInfo = new VideoMetadata() { Title = "Test video title" };
-            mediaPlayer.Play(new Uri(currentChannel.URI.TrimEnd('\r', '\n')));
+            recordingWorker = new BackgroundWorker();
+            recordingWorker.DoWork += new DoWorkEventHandler(Record_Worker); // This does the job ...
+            recordingWorker.WorkerSupportsCancellation = true; // This allows cancellation.
+            recordingWorker.RunWorkerAsync(currentChannel);
         }
 
-        private void btDuna_Click(object sender, EventArgs e)
+        private void VideoPlayerForm_Resize(object sender, EventArgs e)
         {
-            if (currentChannel.IsRecording)
-            {
-                recordingWorker.CancelAsync(); // Stops recording thread
-            }
-            currentChannel.IsPlaying = false;
-            mediaPlayer.Stop();
-            currentChannel = Channels.Duna;
-            currentChannel.URI = GetChannelURI(currentChannel);
-            currentChannel.IsPlaying = true;
-            currentChannel.StreamInfo = new VideoMetadata() { Title = "Test video title" };
-            mediaPlayer.Play(new Uri(currentChannel.URI.TrimEnd('\r', '\n')));
+            // Keep the video control center on the mediaPlayer when resized
+            this.flowLayoutPanel1.Location = new System.Drawing.Point((this.mediaPlayer.Width / 2) - (this.flowLayoutPanel1.Width / 2) + 12, this.mediaPlayer.Bottom + 6);
         }
 
-        private void btDunaWorld_Click(object sender, EventArgs e)
+        private void VideoPlayerForm_Load(object sender, EventArgs e)
         {
-            if (currentChannel.IsRecording)
-            {
-                recordingWorker.CancelAsync(); // Stops recording thread
-            }
-            currentChannel.IsPlaying = false;
-            mediaPlayer.Stop();
-            currentChannel = Channels.DunaWorld;
-            currentChannel.URI = GetChannelURI(currentChannel);
-            currentChannel.IsPlaying = true;
-            currentChannel.StreamInfo = new VideoMetadata() { Title = "Test video title" };
-            mediaPlayer.Play(new Uri(currentChannel.URI.TrimEnd('\r', '\n')));
+            // Center control buttons
+            this.flowLayoutPanel1.Location = new System.Drawing.Point((this.mediaPlayer.Width / 2) - (this.flowLayoutPanel1.Width / 2) + 12, this.mediaPlayer.Bottom + 6);
         }
     }
 }
