@@ -31,15 +31,17 @@ namespace MagyarTV
                     daysToRecord.Add(cb.Text, cb.Checked);
                 }
             
-            ScheduleItem scheduleItem = new ScheduleItem()
+            ScheduleItem ScheduleItem = new ScheduleItem()
             {
-                ChannelToRecord = this.cbChannel.Name,
+                ChannelToRecord = this.cbChannel.Text,
                 StartTime = this.dtpStart.Value,
                 EndTime = this.dtpEnd.Value,
                 DaysToRecord = daysToRecord,
                 Repeat = this.cbRepeat.Checked,
             };
 
+            Database database = new Database();
+            database.AddScheduleItem(ScheduleItem);
             this.Close();
         }
 

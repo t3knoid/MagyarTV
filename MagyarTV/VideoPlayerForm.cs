@@ -202,6 +202,8 @@ namespace MagyarTV
             }
             ScheduleRecordingForm scheduleRecording = new ScheduleRecordingForm() { Channels = channelList };
             scheduleRecording.Show();
+            ScheduleItem scheduleItem = scheduleRecording.ScheduleItem;
+
         }
     }
 }

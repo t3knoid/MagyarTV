@@ -1,0 +1,15 @@
+﻿CREATE TABLE `RecordingSchedules` (
+	`ID`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`Schedule`	INTEGER,
+	`Channel`	TEXT,
+	`StartTime`	TEXT,
+	`EndTime`	TEXT,
+	`Monday`	INTEGER,
+	`Tuesday`	INTEGER,
+	`Wednesday`	INTEGER,
+	`Thursday`	INTEGER,
+	`Friday`	INTEGER,
+	`Saturday`	INTEGER,
+	`Sunday`	INTEGER,
+	`Repeat`	INTEGER
+);
