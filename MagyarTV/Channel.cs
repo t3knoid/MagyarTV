@@ -16,4 +16,5 @@ namespace MagyarTV
         public bool IsPlaying { get; set; }
         public VideoMetadata StreamInfo { get; set; }
     }
+
 }
