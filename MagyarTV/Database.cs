@@ -29,10 +29,21 @@ namespace MagyarTV
                     {
                         using (SQLiteDataReader reader = cmd.ExecuteReader())
                         {
+                            Dictionary<string, bool> daysToRecord = new Dictionary<string, bool>();
                             while (reader.Read())
                             {
                                 scheduleItem.ChannelToRecord = reader["Channel"].ToString();
-                                //scheduleItem.StartTime = reader["StartTime"].ToString;
+                                scheduleItem.StartTime = DateTime.Parse(reader["StartTime"].ToString());
+                                scheduleItem.EndTime = DateTime.Parse(reader["EndTime"].ToString());
+                                daysToRecord["Monday"] = reader["Monday"].ToString() == "0" ? false : true;
+                                daysToRecord["Tuesday"] = reader["Tuesday"].ToString() == "0" ? false : true;
+                                daysToRecord["Wednesday"] = reader["Wednesday"].ToString() == "0" ? false : true;
+                                daysToRecord["Thursday"] = reader["Thursday"].ToString() == "0" ? false : true;
+                                daysToRecord["Friday"] = reader["Friday"].ToString() == "0" ? false : true;
+                                daysToRecord["Saturday"] = reader["Saturday"].ToString() == "0" ? false : true;
+                                daysToRecord["Sunday"] = reader["Sunday"].ToString() == "0" ? false : true;
+                                scheduleItem.DaysToRecord = daysToRecord;
+                                scheduleItem.Repeat = reader["Repeat"].ToString() == "0" ? false : true;
                             }
                         }
                     }
@@ -56,8 +67,8 @@ namespace MagyarTV
                     cmd.CommandText = "INSERT INTO RecordingSchedules(Channel,StartTime,EndTime,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday,Repeat) VALUES (@Channel,@StartTime,@EndTime,@Monday,@Tuesday,@Wednesday,@Thursday,@Friday,@Saturday,@Sunday,@Repeat)";
                     cmd.Prepare();
                     cmd.Parameters.AddWithValue("@Channel", schedule.ChannelToRecord);
-                    cmd.Parameters.AddWithValue("@StartTime", schedule.StartTime);
-                    cmd.Parameters.AddWithValue("@EndTime", schedule.EndTime);
+                    cmd.Parameters.AddWithValue("@StartTime", schedule.StartTime.ToShortTimeString());
+                    cmd.Parameters.AddWithValue("@EndTime", schedule.EndTime.ToShortTimeString());
                     cmd.Parameters.AddWithValue("@Monday", schedule.DaysToRecord["Monday"]);
                     cmd.Parameters.AddWithValue("@Tuesday", schedule.DaysToRecord["Tuesday"]);
                     cmd.Parameters.AddWithValue("@Wednesday", schedule.DaysToRecord["Wednesday"]);

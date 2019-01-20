@@ -18,7 +18,6 @@ namespace MagyarTV
         {
             InitializeComponent();            
         }
-
         private void btOK_Click(object sender, EventArgs e)
         {
             // Save the settings here
@@ -42,15 +41,14 @@ namespace MagyarTV
 
             Database database = new Database();
             database.AddScheduleItem(ScheduleItem);
-            this.Close();
+            ScheduleItem si = database.GetScheduleItem(5);
+             this.Close();
         }
-
         private void btCancel_Click(object sender, EventArgs e)
         {
             // Cancel
             this.Close();
         }
-
         private void ScheduleRecordingForm_Load(object sender, EventArgs e)
         {
             BindingSource bindingSource = new BindingSource();

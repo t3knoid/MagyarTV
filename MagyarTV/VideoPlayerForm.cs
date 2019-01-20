@@ -18,6 +18,7 @@ namespace MagyarTV
     public partial class VideoPlayerForm : Form
     {
         Channel currentChannel;
+        Button currentChannelButton;
         Recording currentRecording = new Recording();
         Dictionary<string, Channel> channels = new Dictionary<string, Channel>();
 
@@ -95,6 +96,7 @@ namespace MagyarTV
             // Get channels
             channels = Channels.GetChannels();
             currentChannel = channels["M1"];
+            currentChannelButton = btM1;
         }
         #endregion
 
@@ -116,7 +118,7 @@ namespace MagyarTV
         }
         private void playToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Play(currentChannel);
+            Play();
         }
         private void recordToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -131,7 +133,8 @@ namespace MagyarTV
         }
         private void btPlay_Click(object sender, EventArgs e)
         {
-            Play(currentChannel);
+            currentChannelButton.Select();
+            currentChannelButton.PerformClick();
         }
         private void btRecord_Click(object sender, EventArgs e)
         {
@@ -139,8 +142,10 @@ namespace MagyarTV
         }
         private void btChannel_Click(object sender, EventArgs e)
         {
-            var channelButton = (Button)sender;
-            Play(channels[channelButton.Text]);
+            Stop();
+            currentChannelButton = (Button)sender;
+            currentChannel = channels[currentChannelButton.Text];
+            Play();
         }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -181,10 +186,11 @@ namespace MagyarTV
             currentChannel.IsPlaying = false;
             Logger.Info(String.Format("Stopping channel {0}.", currentChannel.Name));
             mediaPlayer.Stop();
+            currentChannelButton.ForeColor = Color.Black;
+            currentChannelButton.FlatAppearance.BorderColor = Color.White;
         }
-        private void Play(Channel channel)
+        private void Play()
         {
-            currentChannel = channel;
             if (currentChannel.IsRecording)
             {
                 recordingWorker.CancelAsync(); // Stops recording thread
@@ -196,6 +202,7 @@ namespace MagyarTV
 
             Logger.Info(String.Format("Playing channel {0}.", currentChannel.Name));
             mediaPlayer.Play(new Uri(currentChannel.URI.TrimEnd('\r', '\n')));
+            currentChannelButton.ForeColor = Color.Blue;
         }
         #endregion
 
@@ -252,5 +259,6 @@ namespace MagyarTV
             }
         }
         #endregion
+
     }
 }
