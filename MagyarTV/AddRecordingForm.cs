@@ -10,14 +10,32 @@ using System.Windows.Forms;
 
 namespace MagyarTV
 {
-    public partial class ScheduleRecordingForm : Form
+    public partial class AddRecordingForm : Form
     {
         public ScheduleItem ScheduleItem { get; set; }
-        public List<string> Channels { get; set; }
-        public ScheduleRecordingForm()
+        public AddRecordingForm()
         {
             InitializeComponent();            
         }
+
+        public void InitializeFields()
+        {
+            if (ScheduleItem != null)
+            {
+                cbChannel.Text = ScheduleItem.ChannelToRecord;
+                dtpStart.Value = ScheduleItem.StartTime;
+                dtpEnd.Value = ScheduleItem.EndTime;
+                cbSunday.Checked = ScheduleItem.DaysToRecord["Sunday"];
+                cbMonday.Checked = ScheduleItem.DaysToRecord["Monday"];
+                cbTuesday.Checked = ScheduleItem.DaysToRecord["Tuesday"];
+                cbWednesday.Checked = ScheduleItem.DaysToRecord["Wednesday"];
+                cbThursday.Checked = ScheduleItem.DaysToRecord["Thursday"];
+                cbFriday.Checked = ScheduleItem.DaysToRecord["Friday"];
+                cbSaturday.Checked = ScheduleItem.DaysToRecord["Saturday"];
+                cbRepeat.Checked = ScheduleItem.Repeat;
+            }
+        }
+
         private void btOK_Click(object sender, EventArgs e)
         {
             // Save the settings here
@@ -41,8 +59,7 @@ namespace MagyarTV
 
             Database database = new Database();
             database.AddScheduleItem(ScheduleItem);
-            ScheduleItem si = database.GetScheduleItem(5);
-             this.Close();
+            this.Close();
         }
         private void btCancel_Click(object sender, EventArgs e)
         {
@@ -52,7 +69,7 @@ namespace MagyarTV
         private void ScheduleRecordingForm_Load(object sender, EventArgs e)
         {
             BindingSource bindingSource = new BindingSource();
-            bindingSource.DataSource = Channels;
+            bindingSource.DataSource =  Channels.GetChannelNames(); ;
             this.cbChannel.DataSource = bindingSource.DataSource;
         }
     }

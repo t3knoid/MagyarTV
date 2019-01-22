@@ -1,6 +1,6 @@
 ﻿namespace MagyarTV
 {
-    partial class ScheduleRecordingForm
+    partial class AddRecordingForm
     {
         /// <summary>
         /// Required designer variable.
@@ -36,13 +36,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbChannel = new System.Windows.Forms.ComboBox();
             this.pnlDays = new System.Windows.Forms.Panel();
-            this.cbSunday = new System.Windows.Forms.CheckBox();
-            this.cbMonday = new System.Windows.Forms.CheckBox();
-            this.cbTuesday = new System.Windows.Forms.CheckBox();
-            this.cbThursday = new System.Windows.Forms.CheckBox();
-            this.cbFriday = new System.Windows.Forms.CheckBox();
-            this.cbSaturday = new System.Windows.Forms.CheckBox();
             this.cbWednesday = new System.Windows.Forms.CheckBox();
+            this.cbSaturday = new System.Windows.Forms.CheckBox();
+            this.cbFriday = new System.Windows.Forms.CheckBox();
+            this.cbThursday = new System.Windows.Forms.CheckBox();
+            this.cbTuesday = new System.Windows.Forms.CheckBox();
+            this.cbMonday = new System.Windows.Forms.CheckBox();
+            this.cbSunday = new System.Windows.Forms.CheckBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.btOK = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
@@ -67,6 +67,7 @@
             this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.dtpStart.Location = new System.Drawing.Point(45, 115);
             this.dtpStart.Name = "dtpStart";
+            this.dtpStart.ShowUpDown = true;
             this.dtpStart.Size = new System.Drawing.Size(121, 20);
             this.dtpStart.TabIndex = 2;
             // 
@@ -75,6 +76,7 @@
             this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.dtpEnd.Location = new System.Drawing.Point(213, 115);
             this.dtpEnd.Name = "dtpEnd";
+            this.dtpEnd.ShowUpDown = true;
             this.dtpEnd.Size = new System.Drawing.Size(104, 20);
             this.dtpEnd.TabIndex = 3;
             // 
@@ -118,55 +120,15 @@
             this.pnlDays.Size = new System.Drawing.Size(373, 75);
             this.pnlDays.TabIndex = 8;
             // 
-            // cbSunday
+            // cbWednesday
             // 
-            this.cbSunday.AutoSize = true;
-            this.cbSunday.Location = new System.Drawing.Point(11, 15);
-            this.cbSunday.Name = "cbSunday";
-            this.cbSunday.Size = new System.Drawing.Size(62, 17);
-            this.cbSunday.TabIndex = 3;
-            this.cbSunday.Text = "Sunday";
-            this.cbSunday.UseVisualStyleBackColor = true;
-            // 
-            // cbMonday
-            // 
-            this.cbMonday.AutoSize = true;
-            this.cbMonday.Location = new System.Drawing.Point(105, 15);
-            this.cbMonday.Name = "cbMonday";
-            this.cbMonday.Size = new System.Drawing.Size(64, 17);
-            this.cbMonday.TabIndex = 4;
-            this.cbMonday.Text = "Monday";
-            this.cbMonday.UseVisualStyleBackColor = true;
-            // 
-            // cbTuesday
-            // 
-            this.cbTuesday.AutoSize = true;
-            this.cbTuesday.Location = new System.Drawing.Point(191, 15);
-            this.cbTuesday.Name = "cbTuesday";
-            this.cbTuesday.Size = new System.Drawing.Size(67, 17);
-            this.cbTuesday.TabIndex = 5;
-            this.cbTuesday.Text = "Tuesday";
-            this.cbTuesday.UseVisualStyleBackColor = true;
-            // 
-            // cbThursday
-            // 
-            this.cbThursday.AutoSize = true;
-            this.cbThursday.Location = new System.Drawing.Point(11, 45);
-            this.cbThursday.Name = "cbThursday";
-            this.cbThursday.Size = new System.Drawing.Size(70, 17);
-            this.cbThursday.TabIndex = 6;
-            this.cbThursday.Text = "Thursday";
-            this.cbThursday.UseVisualStyleBackColor = true;
-            // 
-            // cbFriday
-            // 
-            this.cbFriday.AutoSize = true;
-            this.cbFriday.Location = new System.Drawing.Point(105, 45);
-            this.cbFriday.Name = "cbFriday";
-            this.cbFriday.Size = new System.Drawing.Size(54, 17);
-            this.cbFriday.TabIndex = 7;
-            this.cbFriday.Text = "Friday";
-            this.cbFriday.UseVisualStyleBackColor = true;
+            this.cbWednesday.AutoSize = true;
+            this.cbWednesday.Location = new System.Drawing.Point(288, 15);
+            this.cbWednesday.Name = "cbWednesday";
+            this.cbWednesday.Size = new System.Drawing.Size(83, 17);
+            this.cbWednesday.TabIndex = 9;
+            this.cbWednesday.Text = "Wednesday";
+            this.cbWednesday.UseVisualStyleBackColor = true;
             // 
             // cbSaturday
             // 
@@ -178,15 +140,55 @@
             this.cbSaturday.Text = "Saturday";
             this.cbSaturday.UseVisualStyleBackColor = true;
             // 
-            // cbWednesday
+            // cbFriday
             // 
-            this.cbWednesday.AutoSize = true;
-            this.cbWednesday.Location = new System.Drawing.Point(288, 15);
-            this.cbWednesday.Name = "cbWednesday";
-            this.cbWednesday.Size = new System.Drawing.Size(83, 17);
-            this.cbWednesday.TabIndex = 9;
-            this.cbWednesday.Text = "Wednesday";
-            this.cbWednesday.UseVisualStyleBackColor = true;
+            this.cbFriday.AutoSize = true;
+            this.cbFriday.Location = new System.Drawing.Point(105, 45);
+            this.cbFriday.Name = "cbFriday";
+            this.cbFriday.Size = new System.Drawing.Size(54, 17);
+            this.cbFriday.TabIndex = 7;
+            this.cbFriday.Text = "Friday";
+            this.cbFriday.UseVisualStyleBackColor = true;
+            // 
+            // cbThursday
+            // 
+            this.cbThursday.AutoSize = true;
+            this.cbThursday.Location = new System.Drawing.Point(11, 45);
+            this.cbThursday.Name = "cbThursday";
+            this.cbThursday.Size = new System.Drawing.Size(70, 17);
+            this.cbThursday.TabIndex = 6;
+            this.cbThursday.Text = "Thursday";
+            this.cbThursday.UseVisualStyleBackColor = true;
+            // 
+            // cbTuesday
+            // 
+            this.cbTuesday.AutoSize = true;
+            this.cbTuesday.Location = new System.Drawing.Point(191, 15);
+            this.cbTuesday.Name = "cbTuesday";
+            this.cbTuesday.Size = new System.Drawing.Size(67, 17);
+            this.cbTuesday.TabIndex = 5;
+            this.cbTuesday.Text = "Tuesday";
+            this.cbTuesday.UseVisualStyleBackColor = true;
+            // 
+            // cbMonday
+            // 
+            this.cbMonday.AutoSize = true;
+            this.cbMonday.Location = new System.Drawing.Point(105, 15);
+            this.cbMonday.Name = "cbMonday";
+            this.cbMonday.Size = new System.Drawing.Size(64, 17);
+            this.cbMonday.TabIndex = 4;
+            this.cbMonday.Text = "Monday";
+            this.cbMonday.UseVisualStyleBackColor = true;
+            // 
+            // cbSunday
+            // 
+            this.cbSunday.AutoSize = true;
+            this.cbSunday.Location = new System.Drawing.Point(11, 15);
+            this.cbSunday.Name = "cbSunday";
+            this.cbSunday.Size = new System.Drawing.Size(62, 17);
+            this.cbSunday.TabIndex = 3;
+            this.cbSunday.Text = "Sunday";
+            this.cbSunday.UseVisualStyleBackColor = true;
             // 
             // richTextBox1
             // 
@@ -232,7 +234,7 @@
             // 
             this.channelBindingSource.DataSource = typeof(MagyarTV.Channel);
             // 
-            // ScheduleRecordingForm
+            // AddRecordingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -248,8 +250,9 @@
             this.Controls.Add(this.dtpEnd);
             this.Controls.Add(this.dtpStart);
             this.Controls.Add(this.lbChannel);
-            this.Name = "ScheduleRecordingForm";
-            this.Text = "ScheduleRecordingForm";
+            this.Name = "AddRecordingForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Add Recording";
             this.Load += new System.EventHandler(this.ScheduleRecordingForm_Load);
             this.pnlDays.ResumeLayout(false);
             this.pnlDays.PerformLayout();

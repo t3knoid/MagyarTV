@@ -12,6 +12,7 @@ using System.Threading;
 using System.Reflection;
 using System.Diagnostics;
 using Utilities;
+using CefSharp.WinForms;
 
 namespace MagyarTV
 {
@@ -103,14 +104,8 @@ namespace MagyarTV
         #region Menu Handlers
         private void schedulerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<string> channelList = new List<string>();
-            foreach (KeyValuePair<string, Channel> ch in channels)
-            {
-                channelList.Add(ch.Value.Name);
-            }
-            ScheduleRecordingForm scheduleRecording = new ScheduleRecordingForm() { Channels = channelList };
-            scheduleRecording.Show();
-            ScheduleItem scheduleItem = scheduleRecording.ScheduleItem;
+            RecordingSchedulesForm recordingSchedulesForm = new RecordingSchedulesForm();
+            recordingSchedulesForm.ShowDialog();
         }
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -260,5 +255,13 @@ namespace MagyarTV
         }
         #endregion
 
+        private void tVGuideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string today = DateTime.Now.ToString("yyyyMMdd");
+            string urlstring = String.Format("http://tv.animare.hu/default.aspx?t={0}",today);
+
+            TVGuide tVGuide = new TVGuide() { Url = urlstring };
+            tVGuide.Show();
+        }
     }
 }

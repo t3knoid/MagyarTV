@@ -15,7 +15,6 @@ namespace MagyarTV
         {
             ConnnectionString = "Data Source=Magyartv.sqlite;Version=3; FailIfMissing=True; Foreign Keys=True;";
         }
-
         public ScheduleItem GetScheduleItem(int id)
         {
             ScheduleItem scheduleItem = new ScheduleItem();
@@ -32,6 +31,7 @@ namespace MagyarTV
                             Dictionary<string, bool> daysToRecord = new Dictionary<string, bool>();
                             while (reader.Read())
                             {
+                                scheduleItem.ID = Convert.ToInt32(reader["ID"].ToString());
                                 scheduleItem.ChannelToRecord = reader["Channel"].ToString();
                                 scheduleItem.StartTime = DateTime.Parse(reader["StartTime"].ToString());
                                 scheduleItem.EndTime = DateTime.Parse(reader["EndTime"].ToString());
@@ -90,6 +90,68 @@ namespace MagyarTV
             }
             return result;
         }
+        public List<ScheduleItem> GetScheduleItems()
+        {
+            List<ScheduleItem> scheduleItems = new List<ScheduleItem>();
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM RecordingSchedules";
+                    using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                    {
+                        using (SQLiteDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Dictionary<string, bool> daysToRecord = new Dictionary<string, bool>();
+                                ScheduleItem scheduleItem = new ScheduleItem();
+                                scheduleItem.ID = Convert.ToInt32(reader["ID"].ToString());
+                                scheduleItem.ChannelToRecord = reader["Channel"].ToString();
+                                scheduleItem.StartTime = DateTime.Parse(reader["StartTime"].ToString(),new System.Globalization.CultureInfo("en-US"));
+                                scheduleItem.EndTime = DateTime.Parse(reader["EndTime"].ToString(), new System.Globalization.CultureInfo("en-US"));
+                                daysToRecord["Monday"] = reader["Monday"].ToString() == "0" ? false : true;
+                                daysToRecord["Tuesday"] = reader["Tuesday"].ToString() == "0" ? false : true;
+                                daysToRecord["Wednesday"] = reader["Wednesday"].ToString() == "0" ? false : true;
+                                daysToRecord["Thursday"] = reader["Thursday"].ToString() == "0" ? false : true;
+                                daysToRecord["Friday"] = reader["Friday"].ToString() == "0" ? false : true;
+                                daysToRecord["Saturday"] = reader["Saturday"].ToString() == "0" ? false : true;
+                                daysToRecord["Sunday"] = reader["Sunday"].ToString() == "0" ? false : true;
+                                scheduleItem.DaysToRecord = daysToRecord;
+                                scheduleItem.Repeat = reader["Repeat"].ToString() == "0" ? false : true;
+                                scheduleItems.Add(scheduleItem);
+                            }
+                            
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (SQLiteException ex)
+            { }
+
+            return scheduleItems;
+        }
+
+        public void DeleteItem(int id)
+        {
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
+                {
+                    conn.Open();
+                    string sql = "Delete FROM RecordingSchedules WHERE ID = " + id;
+                    SQLiteCommand cmd = new SQLiteCommand(sql, conn);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (SQLiteException ex)
+            { }
+        }
+
+
     }
 
 }

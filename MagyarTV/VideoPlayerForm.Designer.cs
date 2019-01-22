@@ -51,6 +51,7 @@
             this.btM5 = new System.Windows.Forms.Button();
             this.btDuna = new System.Windows.Forms.Button();
             this.btDunaWorld = new System.Windows.Forms.Button();
+            this.tVGuideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -126,7 +127,8 @@
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
-            this.schedulerToolStripMenuItem});
+            this.schedulerToolStripMenuItem,
+            this.tVGuideToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -134,13 +136,13 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // schedulerToolStripMenuItem
             // 
             this.schedulerToolStripMenuItem.Name = "schedulerToolStripMenuItem";
-            this.schedulerToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.schedulerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.schedulerToolStripMenuItem.Text = "Scheduler";
             this.schedulerToolStripMenuItem.Click += new System.EventHandler(this.schedulerToolStripMenuItem_Click);
             // 
@@ -284,6 +286,13 @@
             this.btDunaWorld.UseVisualStyleBackColor = true;
             this.btDunaWorld.Click += new System.EventHandler(this.btChannel_Click);
             // 
+            // tVGuideToolStripMenuItem
+            // 
+            this.tVGuideToolStripMenuItem.Name = "tVGuideToolStripMenuItem";
+            this.tVGuideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tVGuideToolStripMenuItem.Text = "TV Guide";
+            this.tVGuideToolStripMenuItem.Click += new System.EventHandler(this.tVGuideToolStripMenuItem_Click);
+            // 
             // VideoPlayerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -333,6 +342,7 @@
         private System.Windows.Forms.Button btDuna;
         private System.Windows.Forms.Button btDunaWorld;
         private System.Windows.Forms.ToolStripMenuItem schedulerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tVGuideToolStripMenuItem;
     }
 }
 

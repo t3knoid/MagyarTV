@@ -91,5 +91,26 @@ namespace MagyarTV
             channels.Add(DunaWorld.Name, DunaWorld);
             return channels;
         }
+
+        static public List<string> GetChannelNames()
+        {
+            //Dictionary<string, Channel> channels = GetChannels();
+
+            //List<string> names = new List<string>();
+            //foreach (KeyValuePair<string, Channel> ch in channels)
+            //{
+            //    names.Add(ch.Value.Name);
+            //}
+
+            List<string> names = new List<string>();
+            names.Add(M1.Name);
+            names.Add(M2.Name);
+            names.Add(M4.Name);
+            names.Add(M5.Name);
+            names.Add(Duna.Name);
+            names.Add(DunaWorld.Name);
+
+            return names;
+        }
     }
 }

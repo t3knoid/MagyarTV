@@ -8,6 +8,7 @@ namespace MagyarTV
 {
     public class ScheduleItem
     {
+        public int ID { get; set; }
         public string ChannelToRecord { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
