@@ -51,7 +51,9 @@ namespace MagyarTV
                 }
             }
             catch (SQLiteException ex)
-            { }
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", ex.Message));
+            }
 
             return scheduleItem;
         }
@@ -83,7 +85,7 @@ namespace MagyarTV
                     }
                     catch (SQLiteException ex)
                     {
-
+                        System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", ex.Message));
                     }
                 }
                 conn.Close();
@@ -129,7 +131,9 @@ namespace MagyarTV
                 }
             }
             catch (SQLiteException ex)
-            { }
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", ex.Message));
+            }
 
             return scheduleItems;
         }
@@ -148,7 +152,9 @@ namespace MagyarTV
                 }
             }
             catch (SQLiteException ex)
-            { }
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", ex.Message));
+            }
         }
 
 

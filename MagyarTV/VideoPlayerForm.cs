@@ -69,7 +69,7 @@ namespace MagyarTV
                     if (result == DialogResult.Yes)
                     {
                         e.Cancel = false;
-                        StopPlaying();
+                        Stop();
                         Logger.Info("Exiting.");
                         Application.Exit();
                     }
@@ -117,8 +117,20 @@ namespace MagyarTV
         }
         private void recordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Record();
+            if (currentChannel.IsPlaying)
+            {
+                Record();
+            }
         }
+        private void tVGuideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string today = DateTime.Now.ToString("yyyyMMdd");
+            string urlstring = String.Format("http://tv.animare.hu/default.aspx?t={0}", today);
+
+            TVGuide tVGuide = new TVGuide() { Url = urlstring };
+            tVGuide.Show();
+        }
+
         #endregion
 
         #region Media Controls
@@ -128,19 +140,50 @@ namespace MagyarTV
         }
         private void btPlay_Click(object sender, EventArgs e)
         {
-            currentChannelButton.Select();
-            currentChannelButton.PerformClick();
+            if (!currentChannel.IsPlaying)
+            {
+                currentChannelButton.Select();
+                currentChannelButton.PerformClick();
+            }
         }
         private void btRecord_Click(object sender, EventArgs e)
         {
-            Record();
+            if (currentChannel.IsPlaying)
+            {
+                Record();
+            }
         }
         private void btChannel_Click(object sender, EventArgs e)
         {
-            Stop();
-            currentChannelButton = (Button)sender;
-            currentChannel = channels[currentChannelButton.Text];
-            Play();
+            Button selectedButton = (Button)sender;
+            if (!currentChannel.IsPlaying || (selectedButton.Text != currentChannelButton.Text))
+            {
+
+                if (currentChannel.IsRecording)
+                {
+                    var result = MessageBox.Show("Are you sure you want to stop recording?", "Stop Recording", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        StopRecording();
+                        StopPlaying();
+                        currentChannelButton = selectedButton;
+                        currentChannel = channels[selectedButton.Text];
+                        Play();
+                    }
+                    else
+                    {
+                        currentChannelButton.Select();
+                    }
+
+                }
+                else
+                {
+                    StopPlaying();
+                    currentChannelButton = (Button)sender;
+                    currentChannel = channels[currentChannelButton.Text];
+                    Play();
+                }
+            }
         }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -151,31 +194,43 @@ namespace MagyarTV
         #region Helper methods
         private void Record()
         {
-            recordingWorker = new BackgroundWorker();
-            recordingWorker.DoWork += new DoWorkEventHandler(Record_Worker); // This does the job ...
-            recordingWorker.WorkerSupportsCancellation = true; // This allows cancellation.
-            recordingWorker.RunWorkerAsync(currentChannel);
+            if (!currentChannel.IsRecording)
+            {
+                recordingWorker = new BackgroundWorker();
+                recordingWorker.DoWork += new DoWorkEventHandler(Record_Worker); // This does the job ...
+                recordingWorker.WorkerSupportsCancellation = true; // This allows cancellation.
+                recordingWorker.RunWorkerAsync(currentChannel);
+                //btRecord.Enabled = false;
+                this.recordToolStripMenuItem.Enabled = false;
+            }
         }
         private void Stop()
         {
             if (currentChannel.IsRecording)
             {
-                StopRecording();
+                var result = MessageBox.Show("Are you sure you want to stop recording?", "Stop Recording", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    StopRecording();
+                    StopPlaying();
+                }
             }
             else
             {
                 StopPlaying();
             }
         }
+
         private void StopRecording()
         {
-            var result = MessageBox.Show("Are you sure you want to stop recording?", "Stop Recording", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                Logger.Info(String.Format("Stopped recording channel {0}.", currentChannel.Name));
-                recordingWorker.CancelAsync(); // Stops recording thread
-            }
+            Logger.Info(String.Format("Stopped recording channel {0}.", currentChannel.Name));
+            recordingWorker.CancelAsync(); // Stops recording thread
+            btRecord.ForeColor = Color.Black;
+            currentChannel.IsRecording = false;
+            //btRecord.Enabled = true;
+            this.recordToolStripMenuItem.Enabled = true;
         }
+
         private void StopPlaying()
         {
             currentChannel.IsPlaying = false;
@@ -183,21 +238,19 @@ namespace MagyarTV
             mediaPlayer.Stop();
             currentChannelButton.ForeColor = Color.Black;
             currentChannelButton.FlatAppearance.BorderColor = Color.White;
+            //this.btPlay.Enabled = true;
+            this.playToolStripMenuItem.Enabled = true;
         }
         private void Play()
         {
-            if (currentChannel.IsRecording)
-            {
-                recordingWorker.CancelAsync(); // Stops recording thread
-            }
-            currentChannel.IsPlaying = false;
-            mediaPlayer.Stop();
             currentChannel.IsPlaying = true;
             currentChannel.StreamInfo = new VideoMetadata() { Title = currentChannel.Name };
 
             Logger.Info(String.Format("Playing channel {0}.", currentChannel.Name));
-            mediaPlayer.Play(new Uri(currentChannel.URI.TrimEnd('\r', '\n')));
+            mediaPlayer.Play(new Uri(currentChannel.GetChannelURI(currentChannel.IndexFeed).TrimEnd('\r', '\n')));
             currentChannelButton.ForeColor = Color.Blue;
+            //this.btPlay.Enabled = false;
+            this.playToolStripMenuItem.Enabled = false;
         }
         #endregion
 
@@ -224,7 +277,7 @@ namespace MagyarTV
                             ":sout-keep"
                         };
                         currentChannel.IsRecording = true;
-                        mediaRecorder.SetMedia(new Uri(channel.URI), mediaOptions);
+                        mediaRecorder.SetMedia(new Uri(currentChannel.GetChannelURI(currentChannel.IndexFeed)), mediaOptions);
                         btRecord.ForeColor = Color.Red;
                         mediaRecorder.Play();
                         currentRecording.Channel = channel;
@@ -254,14 +307,5 @@ namespace MagyarTV
             }
         }
         #endregion
-
-        private void tVGuideToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string today = DateTime.Now.ToString("yyyyMMdd");
-            string urlstring = String.Format("http://tv.animare.hu/default.aspx?t={0}",today);
-
-            TVGuide tVGuide = new TVGuide() { Url = urlstring };
-            tVGuide.Show();
-        }
     }
 }

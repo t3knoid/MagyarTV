@@ -39,6 +39,7 @@
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.schedulerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tVGuideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mediaPlayer = new Vlc.DotNet.Forms.VlcControl();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btStop = new System.Windows.Forms.Button();
@@ -51,7 +52,6 @@
             this.btM5 = new System.Windows.Forms.Button();
             this.btDuna = new System.Windows.Forms.Button();
             this.btDunaWorld = new System.Windows.Forms.Button();
-            this.tVGuideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -105,21 +105,21 @@
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // playToolStripMenuItem
             // 
             this.playToolStripMenuItem.Name = "playToolStripMenuItem";
-            this.playToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.playToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.playToolStripMenuItem.Text = "Play";
             this.playToolStripMenuItem.Click += new System.EventHandler(this.playToolStripMenuItem_Click);
             // 
             // recordToolStripMenuItem
             // 
             this.recordToolStripMenuItem.Name = "recordToolStripMenuItem";
-            this.recordToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.recordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.recordToolStripMenuItem.Text = "Record";
             this.recordToolStripMenuItem.Click += new System.EventHandler(this.recordToolStripMenuItem_Click);
             // 
@@ -136,15 +136,22 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // schedulerToolStripMenuItem
             // 
             this.schedulerToolStripMenuItem.Name = "schedulerToolStripMenuItem";
-            this.schedulerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.schedulerToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.schedulerToolStripMenuItem.Text = "Scheduler";
             this.schedulerToolStripMenuItem.Click += new System.EventHandler(this.schedulerToolStripMenuItem_Click);
+            // 
+            // tVGuideToolStripMenuItem
+            // 
+            this.tVGuideToolStripMenuItem.Name = "tVGuideToolStripMenuItem";
+            this.tVGuideToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.tVGuideToolStripMenuItem.Text = "TV Guide";
+            this.tVGuideToolStripMenuItem.Click += new System.EventHandler(this.tVGuideToolStripMenuItem_Click);
             // 
             // mediaPlayer
             // 
@@ -285,13 +292,6 @@
             this.btDunaWorld.Text = "Duna World";
             this.btDunaWorld.UseVisualStyleBackColor = true;
             this.btDunaWorld.Click += new System.EventHandler(this.btChannel_Click);
-            // 
-            // tVGuideToolStripMenuItem
-            // 
-            this.tVGuideToolStripMenuItem.Name = "tVGuideToolStripMenuItem";
-            this.tVGuideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.tVGuideToolStripMenuItem.Text = "TV Guide";
-            this.tVGuideToolStripMenuItem.Click += new System.EventHandler(this.tVGuideToolStripMenuItem_Click);
             // 
             // VideoPlayerForm
             // 
