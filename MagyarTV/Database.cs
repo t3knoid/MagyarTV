@@ -4,17 +4,67 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using System.IO;
+using System.Reflection;
 
 namespace MagyarTV
 {
     class Database
     {
-        public string ConnnectionString;
+        public string ConnnectionString { get; set;}
+        public string DatabaseDir { get; set; }
+        public string DatabasePath { get; set; }
 
         public Database()
         {
-            ConnnectionString = "Data Source=Magyartv.sqlite;Version=3; FailIfMissing=True; Foreign Keys=True;";
+            this.DatabaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "MagyarTV");
+            this.DatabasePath = Path.Combine(DatabaseDir, "Magyartv.sqlite");
+            this.ConnnectionString = String.Format("Data Source={0};Version=3; FailIfMissing=True; Foreign Keys=True;", DatabasePath);
+            CreateSchema();
         }
+
+        private void CreateSchema()
+        {
+            var currentAssembly = Assembly.GetEntryAssembly();
+            var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
+            string sql = Path.Combine(currentDirectory, "sqls", "CreateSchema.sqlite");
+
+            if (!Directory.Exists(this.DatabaseDir))
+            {
+                try
+                {
+                    Directory.CreateDirectory(this.DatabaseDir);
+                }
+                catch (Exception ex)
+                {
+                    // Do something
+                }
+            }
+            if (!File.Exists(this.DatabasePath))
+            {
+                try
+                {
+                    // Create database file
+                    System.Data.SQLite.SQLiteConnection.CreateFile(this.DatabasePath);
+                    using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
+                    {
+                        conn.Open();
+
+                        SQLiteCommand cmd = new SQLiteCommand(ConnnectionString, conn);
+                        cmd.CommandText = File.ReadAllText(@sql);
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Do something
+                }
+            }
+
+        }
+
+
         public ScheduleItem GetScheduleItem(int id)
         {
             ScheduleItem scheduleItem = new ScheduleItem();

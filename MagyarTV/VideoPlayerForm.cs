@@ -247,6 +247,7 @@ namespace MagyarTV
             currentChannel.StreamInfo = new VideoMetadata() { Title = currentChannel.Name };
 
             Logger.Info(String.Format("Playing channel {0}.", currentChannel.Name));
+            try
             {
                 mediaPlayer.Play(new Uri(currentChannel.GetChannelURI(currentChannel.IndexFeed).TrimEnd('\r', '\n')));
             }
