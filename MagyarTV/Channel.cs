@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Scripting.Hosting;
 
 namespace MagyarTV
 {
@@ -27,7 +28,7 @@ namespace MagyarTV
             try
             {
                 ProcessStartInfo start = new ProcessStartInfo();
-                start.FileName = "C:\\Python37\\Python.exe";
+                start.FileName = String.Format("{0}\\Python27\\Python.exe", currentDirectory);
                 start.Arguments = string.Format("\"{0}\" \"{1}\"", cmd, "-i " + feed);
                 start.UseShellExecute = false;// Do not use OS shell
                 start.CreateNoWindow = true; // We don't need new window
