@@ -1,8 +1,11 @@
+import sys
+sys.path.append('lib')
+
 import requests
-import urlparse
+from six.moves.urllib.parse import urljoin
 from bs4 import BeautifulSoup
 import getopt
-import sys
+
 
 def geturi(index):
     """ Returns the URI for a given index
@@ -27,9 +30,10 @@ def geturi(index):
     url_parts = found_line.split('"')
     m3u8_index = 'https:%s' % url_parts[3].replace('\\', '')
 
-    high_res_video = urlparse.urljoin(m3u8_index, high_res_m3u)
-    # print('%s' % high_res_video)
+    high_res_video = urljoin(m3u8_index, high_res_m3u)
+
     return high_res_video
+
 
 feed = None
 
@@ -46,4 +50,4 @@ for opt, arg in opts:
         feed = arg
 
 uri = geturi(feed)
-print uri
+print('%s' % uri)
