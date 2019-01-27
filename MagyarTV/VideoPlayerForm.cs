@@ -95,7 +95,7 @@ namespace MagyarTV
             this.flowLayoutPanel1.Location = new System.Drawing.Point((this.mediaPlayer.Width / 2) - (this.flowLayoutPanel1.Width / 2) + 12, this.mediaPlayer.Bottom + 6);
 
             // Get channels
-            channels = Channels.GetChannels();
+            channels = MediaKlikk.GetChannels();
             currentChannel = channels["M1"];
             currentChannelButton = btM1;
         }
@@ -249,7 +249,7 @@ namespace MagyarTV
             Logger.Info(String.Format("Playing channel {0}.", currentChannel.Name));
             try
             {
-                mediaPlayer.Play(new Uri(currentChannel.GetChannelURI(currentChannel.IndexFeed).TrimEnd('\r', '\n')));
+                mediaPlayer.Play(new Uri(MediaKlikk.GetChannelURI(currentChannel.IndexFeed).TrimEnd('\r', '\n')));
             }
             catch (Exception ex)
             {
@@ -284,7 +284,7 @@ namespace MagyarTV
                             ":sout-keep"
                         };
                         currentChannel.IsRecording = true;
-                        mediaRecorder.SetMedia(new Uri(currentChannel.GetChannelURI(currentChannel.IndexFeed)), mediaOptions);
+                        mediaRecorder.SetMedia(new Uri(MediaKlikk.GetChannelURI(currentChannel.IndexFeed)), mediaOptions);
                         btRecord.ForeColor = Color.Red;
                         mediaRecorder.Play();
                         currentRecording.Channel = channel;

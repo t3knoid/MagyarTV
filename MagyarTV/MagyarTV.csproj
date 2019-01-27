@@ -101,7 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Channel.cs" />
-    <Compile Include="Channels.cs" />
+    <Compile Include="MediaKlikk.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="RecordingSchedules.cs" />
     <Compile Include="RecordingSchedulesForm.cs">
@@ -174,10 +174,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="python\getURI.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="parsers\mediaklikk.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="python\requirements.txt">
+    <Content Include="parsers\requirements.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Python_x64\DLLs\py.ico" />
