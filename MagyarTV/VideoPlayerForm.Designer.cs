@@ -50,16 +50,16 @@
             this.imageListM1 = new System.Windows.Forms.ImageList(this.components);
             this.imageListM2 = new System.Windows.Forms.ImageList(this.components);
             this.btDunaWorld = new System.Windows.Forms.Button();
+            this.imageListDunaWorld = new System.Windows.Forms.ImageList(this.components);
             this.btDuna = new System.Windows.Forms.Button();
+            this.imageDuna = new System.Windows.Forms.ImageList(this.components);
             this.btM5 = new System.Windows.Forms.Button();
+            this.imageListM5 = new System.Windows.Forms.ImageList(this.components);
             this.btM4 = new System.Windows.Forms.Button();
+            this.imageListM4 = new System.Windows.Forms.ImageList(this.components);
             this.btM2 = new System.Windows.Forms.Button();
             this.btM1 = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.imageListM4 = new System.Windows.Forms.ImageList(this.components);
-            this.imageListM5 = new System.Windows.Forms.ImageList(this.components);
-            this.imageDuna = new System.Windows.Forms.ImageList(this.components);
-            this.imageListDunaWorld = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -68,10 +68,6 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.editToolStripMenuItem,
-            this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(784, 24);
@@ -253,6 +249,13 @@
             this.btDunaWorld.MouseLeave += new System.EventHandler(this.buttonMouseLeave);
             this.btDunaWorld.MouseHover += new System.EventHandler(this.buttonMouseHover);
             // 
+            // imageListDunaWorld
+            // 
+            this.imageListDunaWorld.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListDunaWorld.ImageStream")));
+            this.imageListDunaWorld.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListDunaWorld.Images.SetKeyName(0, "dunaworld_off.png");
+            this.imageListDunaWorld.Images.SetKeyName(1, "dunaworld_on.png");
+            // 
             // btDuna
             // 
             this.btDuna.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -271,6 +274,13 @@
             this.btDuna.Click += new System.EventHandler(this.btChannel_Click);
             this.btDuna.MouseLeave += new System.EventHandler(this.buttonMouseLeave);
             this.btDuna.MouseHover += new System.EventHandler(this.buttonMouseHover);
+            // 
+            // imageDuna
+            // 
+            this.imageDuna.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageDuna.ImageStream")));
+            this.imageDuna.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageDuna.Images.SetKeyName(0, "duna_off.png");
+            this.imageDuna.Images.SetKeyName(1, "duna_on.png");
             // 
             // btM5
             // 
@@ -291,6 +301,13 @@
             this.btM5.MouseLeave += new System.EventHandler(this.buttonMouseLeave);
             this.btM5.MouseHover += new System.EventHandler(this.buttonMouseHover);
             // 
+            // imageListM5
+            // 
+            this.imageListM5.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListM5.ImageStream")));
+            this.imageListM5.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListM5.Images.SetKeyName(0, "m5_off.png");
+            this.imageListM5.Images.SetKeyName(1, "m5_on.png");
+            // 
             // btM4
             // 
             this.btM4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -309,6 +326,13 @@
             this.btM4.Click += new System.EventHandler(this.btChannel_Click);
             this.btM4.MouseLeave += new System.EventHandler(this.buttonMouseLeave);
             this.btM4.MouseHover += new System.EventHandler(this.buttonMouseHover);
+            // 
+            // imageListM4
+            // 
+            this.imageListM4.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListM4.ImageStream")));
+            this.imageListM4.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListM4.Images.SetKeyName(0, "m4_off.png");
+            this.imageListM4.Images.SetKeyName(1, "m4_on.png");
             // 
             // btM2
             // 
@@ -364,34 +388,6 @@
             this.flowLayoutPanel2.Size = new System.Drawing.Size(82, 504);
             this.flowLayoutPanel2.TabIndex = 8;
             // 
-            // imageListM4
-            // 
-            this.imageListM4.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListM4.ImageStream")));
-            this.imageListM4.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListM4.Images.SetKeyName(0, "m4_off.png");
-            this.imageListM4.Images.SetKeyName(1, "m4_on.png");
-            // 
-            // imageListM5
-            // 
-            this.imageListM5.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListM5.ImageStream")));
-            this.imageListM5.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListM5.Images.SetKeyName(0, "m5_off.png");
-            this.imageListM5.Images.SetKeyName(1, "m5_on.png");
-            // 
-            // imageDuna
-            // 
-            this.imageDuna.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageDuna.ImageStream")));
-            this.imageDuna.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageDuna.Images.SetKeyName(0, "duna_off.png");
-            this.imageDuna.Images.SetKeyName(1, "duna_on.png");
-            // 
-            // imageListDunaWorld
-            // 
-            this.imageListDunaWorld.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListDunaWorld.ImageStream")));
-            this.imageListDunaWorld.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListDunaWorld.Images.SetKeyName(0, "dunaworld_off.png");
-            this.imageListDunaWorld.Images.SetKeyName(1, "dunaworld_on.png");
-            // 
             // VideoPlayerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -401,6 +397,7 @@
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.mediaPlayer);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "VideoPlayerForm";
             this.Text = "MagyarTV";

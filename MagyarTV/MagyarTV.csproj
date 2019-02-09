@@ -40,6 +40,13 @@
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon_9qP_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Win32Resource>
+    </Win32Resource>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -103,6 +110,11 @@
     <Compile Include="Channel.cs" />
     <Compile Include="MediaKlikk.cs" />
     <Compile Include="Database.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RecordingSchedules.cs" />
     <Compile Include="RecordingSchedulesForm.cs">
       <SubType>Form</SubType>
@@ -147,13 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <None Include="MagyarTV.sqlite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -175,6 +183,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="icon_2RM_icon.ico" />
+    <Content Include="icon_9qP_icon.ico" />
     <Content Include="parsers\.idea\misc.xml" />
     <Content Include="parsers\.idea\modules.xml" />
     <Content Include="parsers\.idea\workspace.xml" />
@@ -222,6 +232,7 @@
     <Content Include="Python_x86\sqlite3.dll" />
     <Content Include="Python_x86\vcruntime140.dll" />
     <Content Include="Readme.txt" />
+    <None Include="Resources\icon_9qP_icon.ico" />
     <None Include="Python_x64\lib\backports.functools_lru_cache-1.5.dist-info\DESCRIPTION.rst" />
     <None Include="Python_x64\lib\backports.functools_lru_cache-1.5.dist-info\INSTALLER" />
     <None Include="Python_x64\lib\backports.functools_lru_cache-1.5.dist-info\METADATA" />
