@@ -14,32 +14,44 @@ namespace MagyarTV
         static private Channel M1 => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv1live",
+            Info = "https://www.mediaklikk.hu/m1-elo",
             Name = "M1",
         };
 
         static private Channel M2 => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv2live",
+            Info = "https://www.mediaklikk.hu/m2-elo",
             Name = "M2",
+        };
+        static private Channel M3 => new Channel()
+        {
+            IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv3live",
+            Info = "https://www.mediaklikk.hu/m3-elo/",
+            Name = "M3",
         };
         static private Channel M4 => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv4live",
+            Info = "https://www.mediaklikk.hu/m4-elo/",
             Name = "M4",
         };
         static private Channel M5 => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv5live",
+            Info = "https://www.mediaklikk.hu/m5-elo",
             Name = "M5",
         };
         static private Channel Duna => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=dunalive",
+            Info = "https://www.mediaklikk.hu/duna-elo",
             Name = "Duna",
         };
         static private Channel DunaWorld => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=dunaworldlive",
+            Info = "https://www.mediaklikk.hu/duna-world-elo",
             Name = "Duna World",
         };
 
@@ -48,6 +60,7 @@ namespace MagyarTV
             Dictionary<string, Channel> channels = new Dictionary<string, Channel>();
             channels.Add(M1.Name, M1);
             channels.Add(M2.Name, M2);
+            channels.Add(M3.Name, M3);
             channels.Add(M4.Name, M4);
             channels.Add(M5.Name, M5);
             channels.Add(Duna.Name, Duna);
@@ -60,6 +73,7 @@ namespace MagyarTV
             List<string> names = new List<string>();
             names.Add(M1.Name);
             names.Add(M2.Name);
+            names.Add(M3.Name);
             names.Add(M4.Name);
             names.Add(M5.Name);
             names.Add(Duna.Name);
@@ -103,3 +117,4 @@ namespace MagyarTV
 
     }
 }
+

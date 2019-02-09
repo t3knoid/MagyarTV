@@ -16,6 +16,7 @@ namespace MagyarTV
         public string ID { get; set; }
         public string URI { get; set; }
         public string IndexFeed { get; set; }
+        public string Info { get; set; }
         public bool IsRecording { get; set; }
         public bool IsPlaying { get; set; }
         public VideoMetadata StreamInfo { get; set; }
