@@ -156,6 +156,8 @@ namespace MagyarTV
         private void btChannel_Click(object sender, EventArgs e)
         {
             Button selectedButton = (Button)sender;
+            selectedButton.MouseLeave -= new System.EventHandler(this.buttonMouseLeave); // Temporarily stop mouseleave event handler
+            selectedButton.ImageIndex = 1;
             if (!currentChannel.IsPlaying || (selectedButton.Text != currentChannelButton.Text))
             {
 
@@ -237,6 +239,7 @@ namespace MagyarTV
             Logger.Info(String.Format("Stopping channel {0}.", currentChannel.Name));
             mediaPlayer.Stop();
             currentChannelButton.ForeColor = Color.Black;
+            currentChannelButton.ImageIndex = 0;
             currentChannelButton.FlatAppearance.BorderColor = Color.White;
             //this.btPlay.Enabled = true;
             this.playToolStripMenuItem.Enabled = true;
@@ -255,8 +258,8 @@ namespace MagyarTV
             {
                 MessageBox.Show(String.Format("Error playing {0}, {1}", currentChannel.Name, ex.Message));
             }
-            currentChannelButton.ForeColor = Color.Blue;
-            //this.btPlay.Enabled = false;
+            currentChannelButton.ForeColor = Color.LightGreen ;
+            currentChannelButton.ImageIndex = 1;
             this.playToolStripMenuItem.Enabled = false;
         }
         #endregion
@@ -314,5 +317,17 @@ namespace MagyarTV
             }
         }
         #endregion
+
+        private void buttonMouseHover(object sender, EventArgs e)
+        {
+            Button selectedButton = (Button)sender;
+            selectedButton.ImageIndex = 1;
+        }
+
+        private void buttonMouseLeave(object sender, EventArgs e)
+        {
+            Button selectedButton = (Button)sender;
+            selectedButton.ImageIndex = 0;
+        }
     }
 }

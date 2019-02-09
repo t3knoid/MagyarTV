@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VideoPlayerForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,13 +47,19 @@
             this.btStop = new System.Windows.Forms.Button();
             this.btPlay = new System.Windows.Forms.Button();
             this.btRecord = new System.Windows.Forms.Button();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btM1 = new System.Windows.Forms.Button();
-            this.btM2 = new System.Windows.Forms.Button();
-            this.btM4 = new System.Windows.Forms.Button();
-            this.btM5 = new System.Windows.Forms.Button();
-            this.btDuna = new System.Windows.Forms.Button();
+            this.imageListM1 = new System.Windows.Forms.ImageList(this.components);
+            this.imageListM2 = new System.Windows.Forms.ImageList(this.components);
             this.btDunaWorld = new System.Windows.Forms.Button();
+            this.btDuna = new System.Windows.Forms.Button();
+            this.btM5 = new System.Windows.Forms.Button();
+            this.btM4 = new System.Windows.Forms.Button();
+            this.btM2 = new System.Windows.Forms.Button();
+            this.btM1 = new System.Windows.Forms.Button();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.imageListM4 = new System.Windows.Forms.ImageList(this.components);
+            this.imageListM5 = new System.Windows.Forms.ImageList(this.components);
+            this.imageDuna = new System.Windows.Forms.ImageList(this.components);
+            this.imageListDunaWorld = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -66,7 +74,7 @@
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(584, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(784, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -105,21 +113,21 @@
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // playToolStripMenuItem
             // 
             this.playToolStripMenuItem.Name = "playToolStripMenuItem";
-            this.playToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.playToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.playToolStripMenuItem.Text = "Play";
             this.playToolStripMenuItem.Click += new System.EventHandler(this.playToolStripMenuItem_Click);
             // 
             // recordToolStripMenuItem
             // 
             this.recordToolStripMenuItem.Name = "recordToolStripMenuItem";
-            this.recordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.recordToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.recordToolStripMenuItem.Text = "Record";
             this.recordToolStripMenuItem.Click += new System.EventHandler(this.recordToolStripMenuItem_Click);
             // 
@@ -159,9 +167,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mediaPlayer.BackColor = System.Drawing.Color.Black;
-            this.mediaPlayer.Location = new System.Drawing.Point(12, 27);
+            this.mediaPlayer.Location = new System.Drawing.Point(9, 27);
             this.mediaPlayer.Name = "mediaPlayer";
-            this.mediaPlayer.Size = new System.Drawing.Size(480, 360);
+            this.mediaPlayer.Size = new System.Drawing.Size(683, 504);
             this.mediaPlayer.Spu = -1;
             this.mediaPlayer.TabIndex = 6;
             this.mediaPlayer.VlcLibDirectory = null;
@@ -174,7 +182,7 @@
             this.flowLayoutPanel1.Controls.Add(this.btStop);
             this.flowLayoutPanel1.Controls.Add(this.btPlay);
             this.flowLayoutPanel1.Controls.Add(this.btRecord);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 393);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(253, 537);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(240, 75);
             this.flowLayoutPanel1.TabIndex = 7;
@@ -212,6 +220,135 @@
             this.btRecord.UseVisualStyleBackColor = true;
             this.btRecord.Click += new System.EventHandler(this.btRecord_Click);
             // 
+            // imageListM1
+            // 
+            this.imageListM1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListM1.ImageStream")));
+            this.imageListM1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListM1.Images.SetKeyName(0, "m1_off.png");
+            this.imageListM1.Images.SetKeyName(1, "m1_on.png");
+            // 
+            // imageListM2
+            // 
+            this.imageListM2.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListM2.ImageStream")));
+            this.imageListM2.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListM2.Images.SetKeyName(0, "m2_off.png");
+            this.imageListM2.Images.SetKeyName(1, "m2_on.png");
+            // 
+            // btDunaWorld
+            // 
+            this.btDunaWorld.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btDunaWorld.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
+            this.btDunaWorld.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btDunaWorld.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btDunaWorld.ImageIndex = 0;
+            this.btDunaWorld.ImageList = this.imageListDunaWorld;
+            this.btDunaWorld.Location = new System.Drawing.Point(3, 408);
+            this.btDunaWorld.Name = "btDunaWorld";
+            this.btDunaWorld.Size = new System.Drawing.Size(75, 75);
+            this.btDunaWorld.TabIndex = 5;
+            this.btDunaWorld.Text = "Duna World";
+            this.btDunaWorld.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btDunaWorld.UseVisualStyleBackColor = false;
+            this.btDunaWorld.Click += new System.EventHandler(this.btChannel_Click);
+            this.btDunaWorld.MouseLeave += new System.EventHandler(this.buttonMouseLeave);
+            this.btDunaWorld.MouseHover += new System.EventHandler(this.buttonMouseHover);
+            // 
+            // btDuna
+            // 
+            this.btDuna.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btDuna.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
+            this.btDuna.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btDuna.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btDuna.ImageIndex = 0;
+            this.btDuna.ImageList = this.imageDuna;
+            this.btDuna.Location = new System.Drawing.Point(3, 327);
+            this.btDuna.Name = "btDuna";
+            this.btDuna.Size = new System.Drawing.Size(75, 75);
+            this.btDuna.TabIndex = 4;
+            this.btDuna.Text = "Duna";
+            this.btDuna.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btDuna.UseVisualStyleBackColor = false;
+            this.btDuna.Click += new System.EventHandler(this.btChannel_Click);
+            this.btDuna.MouseLeave += new System.EventHandler(this.buttonMouseLeave);
+            this.btDuna.MouseHover += new System.EventHandler(this.buttonMouseHover);
+            // 
+            // btM5
+            // 
+            this.btM5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btM5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
+            this.btM5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btM5.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btM5.ImageIndex = 0;
+            this.btM5.ImageList = this.imageListM5;
+            this.btM5.Location = new System.Drawing.Point(3, 246);
+            this.btM5.Name = "btM5";
+            this.btM5.Size = new System.Drawing.Size(75, 75);
+            this.btM5.TabIndex = 3;
+            this.btM5.Text = "M5";
+            this.btM5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btM5.UseVisualStyleBackColor = false;
+            this.btM5.Click += new System.EventHandler(this.btChannel_Click);
+            this.btM5.MouseLeave += new System.EventHandler(this.buttonMouseLeave);
+            this.btM5.MouseHover += new System.EventHandler(this.buttonMouseHover);
+            // 
+            // btM4
+            // 
+            this.btM4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btM4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
+            this.btM4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btM4.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btM4.ImageIndex = 0;
+            this.btM4.ImageList = this.imageListM4;
+            this.btM4.Location = new System.Drawing.Point(3, 165);
+            this.btM4.Name = "btM4";
+            this.btM4.Size = new System.Drawing.Size(75, 75);
+            this.btM4.TabIndex = 2;
+            this.btM4.Text = "M4";
+            this.btM4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btM4.UseVisualStyleBackColor = false;
+            this.btM4.Click += new System.EventHandler(this.btChannel_Click);
+            this.btM4.MouseLeave += new System.EventHandler(this.buttonMouseLeave);
+            this.btM4.MouseHover += new System.EventHandler(this.buttonMouseHover);
+            // 
+            // btM2
+            // 
+            this.btM2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btM2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
+            this.btM2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btM2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btM2.ImageIndex = 0;
+            this.btM2.ImageList = this.imageListM2;
+            this.btM2.Location = new System.Drawing.Point(3, 84);
+            this.btM2.Name = "btM2";
+            this.btM2.Size = new System.Drawing.Size(75, 75);
+            this.btM2.TabIndex = 1;
+            this.btM2.Text = "M2";
+            this.btM2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btM2.UseVisualStyleBackColor = false;
+            this.btM2.Click += new System.EventHandler(this.btChannel_Click);
+            this.btM2.MouseLeave += new System.EventHandler(this.buttonMouseLeave);
+            this.btM2.MouseHover += new System.EventHandler(this.buttonMouseHover);
+            // 
+            // btM1
+            // 
+            this.btM1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btM1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
+            this.btM1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btM1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btM1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btM1.ImageIndex = 0;
+            this.btM1.ImageList = this.imageListM1;
+            this.btM1.Location = new System.Drawing.Point(3, 3);
+            this.btM1.Name = "btM1";
+            this.btM1.Size = new System.Drawing.Size(75, 75);
+            this.btM1.TabIndex = 0;
+            this.btM1.Text = "M1";
+            this.btM1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btM1.UseVisualStyleBackColor = false;
+            this.btM1.Click += new System.EventHandler(this.btChannel_Click);
+            this.btM1.MouseLeave += new System.EventHandler(this.buttonMouseLeave);
+            this.btM1.MouseHover += new System.EventHandler(this.buttonMouseHover);
+            // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -222,82 +359,44 @@
             this.flowLayoutPanel2.Controls.Add(this.btM5);
             this.flowLayoutPanel2.Controls.Add(this.btDuna);
             this.flowLayoutPanel2.Controls.Add(this.btDunaWorld);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(498, 27);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(698, 27);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(82, 360);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(82, 504);
             this.flowLayoutPanel2.TabIndex = 8;
             // 
-            // btM1
+            // imageListM4
             // 
-            this.btM1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btM1.Location = new System.Drawing.Point(3, 3);
-            this.btM1.Name = "btM1";
-            this.btM1.Size = new System.Drawing.Size(75, 23);
-            this.btM1.TabIndex = 0;
-            this.btM1.Text = "M1";
-            this.btM1.UseVisualStyleBackColor = true;
-            this.btM1.Click += new System.EventHandler(this.btChannel_Click);
+            this.imageListM4.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListM4.ImageStream")));
+            this.imageListM4.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListM4.Images.SetKeyName(0, "m4_off.png");
+            this.imageListM4.Images.SetKeyName(1, "m4_on.png");
             // 
-            // btM2
+            // imageListM5
             // 
-            this.btM2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btM2.Location = new System.Drawing.Point(3, 32);
-            this.btM2.Name = "btM2";
-            this.btM2.Size = new System.Drawing.Size(75, 23);
-            this.btM2.TabIndex = 1;
-            this.btM2.Text = "M2";
-            this.btM2.UseVisualStyleBackColor = true;
-            this.btM2.Click += new System.EventHandler(this.btChannel_Click);
+            this.imageListM5.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListM5.ImageStream")));
+            this.imageListM5.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListM5.Images.SetKeyName(0, "m5_off.png");
+            this.imageListM5.Images.SetKeyName(1, "m5_on.png");
             // 
-            // btM4
+            // imageDuna
             // 
-            this.btM4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btM4.Location = new System.Drawing.Point(3, 61);
-            this.btM4.Name = "btM4";
-            this.btM4.Size = new System.Drawing.Size(75, 23);
-            this.btM4.TabIndex = 4;
-            this.btM4.Text = "M4";
-            this.btM4.UseVisualStyleBackColor = true;
-            this.btM4.Click += new System.EventHandler(this.btChannel_Click);
+            this.imageDuna.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageDuna.ImageStream")));
+            this.imageDuna.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageDuna.Images.SetKeyName(0, "duna_off.png");
+            this.imageDuna.Images.SetKeyName(1, "duna_on.png");
             // 
-            // btM5
+            // imageListDunaWorld
             // 
-            this.btM5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btM5.Location = new System.Drawing.Point(3, 90);
-            this.btM5.Name = "btM5";
-            this.btM5.Size = new System.Drawing.Size(75, 23);
-            this.btM5.TabIndex = 5;
-            this.btM5.Text = "M5";
-            this.btM5.UseVisualStyleBackColor = true;
-            this.btM5.Click += new System.EventHandler(this.btChannel_Click);
-            // 
-            // btDuna
-            // 
-            this.btDuna.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btDuna.Location = new System.Drawing.Point(3, 119);
-            this.btDuna.Name = "btDuna";
-            this.btDuna.Size = new System.Drawing.Size(75, 23);
-            this.btDuna.TabIndex = 2;
-            this.btDuna.Text = "Duna";
-            this.btDuna.UseVisualStyleBackColor = true;
-            this.btDuna.Click += new System.EventHandler(this.btChannel_Click);
-            // 
-            // btDunaWorld
-            // 
-            this.btDunaWorld.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btDunaWorld.Location = new System.Drawing.Point(3, 148);
-            this.btDunaWorld.Name = "btDunaWorld";
-            this.btDunaWorld.Size = new System.Drawing.Size(75, 23);
-            this.btDunaWorld.TabIndex = 3;
-            this.btDunaWorld.Text = "Duna World";
-            this.btDunaWorld.UseVisualStyleBackColor = true;
-            this.btDunaWorld.Click += new System.EventHandler(this.btChannel_Click);
+            this.imageListDunaWorld.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListDunaWorld.ImageStream")));
+            this.imageListDunaWorld.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListDunaWorld.Images.SetKeyName(0, "dunaworld_off.png");
+            this.imageListDunaWorld.Images.SetKeyName(1, "dunaworld_on.png");
             // 
             // VideoPlayerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 469);
+            this.ClientSize = new System.Drawing.Size(784, 624);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.mediaPlayer);
@@ -334,15 +433,21 @@
         private System.Windows.Forms.Button btStop;
         private System.Windows.Forms.Button btPlay;
         private System.Windows.Forms.Button btRecord;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-        private System.Windows.Forms.Button btM1;
-        private System.Windows.Forms.Button btM2;
-        private System.Windows.Forms.Button btM4;
-        private System.Windows.Forms.Button btM5;
-        private System.Windows.Forms.Button btDuna;
-        private System.Windows.Forms.Button btDunaWorld;
         private System.Windows.Forms.ToolStripMenuItem schedulerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tVGuideToolStripMenuItem;
+        private System.Windows.Forms.ImageList imageListM1;
+        private System.Windows.Forms.ImageList imageListM2;
+        private System.Windows.Forms.Button btDunaWorld;
+        private System.Windows.Forms.Button btDuna;
+        private System.Windows.Forms.Button btM5;
+        private System.Windows.Forms.Button btM4;
+        private System.Windows.Forms.ImageList imageListM4;
+        private System.Windows.Forms.Button btM2;
+        private System.Windows.Forms.Button btM1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.ImageList imageListM5;
+        private System.Windows.Forms.ImageList imageDuna;
+        private System.Windows.Forms.ImageList imageListDunaWorld;
     }
 }
 
