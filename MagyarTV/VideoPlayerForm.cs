@@ -277,7 +277,20 @@ namespace MagyarTV
                 {
                     var currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
                     var libDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
-                    var destination = Path.Combine(currentDirectory, channel.StreamInfo.Title + ".ts");
+                    var destinationDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "MagyarTV");
+                    if (!File.Exists(destinationDir))
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(destinationDir);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex);
+                        }
+                        
+                    }
+                    var destination = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "MagyarTV", channel.StreamInfo.Title + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".ts");
                     /// New definition of mediaPlayer
                     using (var mediaRecorder = new Vlc.DotNet.Core.VlcMediaPlayer(libDirectory))
                     {
