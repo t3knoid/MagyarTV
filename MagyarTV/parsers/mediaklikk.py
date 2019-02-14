@@ -14,10 +14,11 @@ def geturi(index):
 
     search_str = "\/index.m3u8"
     high_res_m3u = "02.m3u8"
+    high_res_video = ""
 
     # Read index feed
     page = requests.get(index)
-    tree = BeautifulSoup(page.content, 'html.parser')
+    tree = BeautifulSoup(page.text, 'html.parser')
     scripts = tree.find_all('script')
     script = scripts[6].text
 
@@ -25,12 +26,13 @@ def geturi(index):
     lines = script.split('\n')
 
     # Get the line containing index.m3u8
-    found_line = [s for s in lines if (search_str in s)][0]
+    found = [s for s in lines if (search_str in s)]
 
-    url_parts = found_line.split('"')
-    m3u8_index = 'https:%s' % url_parts[3].replace('\\', '')
-
-    high_res_video = urljoin(m3u8_index, high_res_m3u)
+    if found:
+        found_line = found[0]
+        url_parts = found_line.split('"')
+        m3u8_index = 'https:%s' % url_parts[3].replace('\\', '')
+        high_res_video = urljoin(m3u8_index, high_res_m3u)
 
     return high_res_video
 

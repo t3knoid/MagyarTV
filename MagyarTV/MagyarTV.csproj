@@ -183,7 +183,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="icon_2RM_icon.ico" />
     <Content Include="icon_9qP_icon.ico" />
     <Content Include="parsers\.idea\misc.xml" />
     <Content Include="parsers\.idea\modules.xml" />

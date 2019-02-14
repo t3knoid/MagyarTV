@@ -17,7 +17,7 @@ namespace MagyarTV
 
         static void Main()
         {
-            Logger logger = new Logger(Path.Combine(Path.GetTempPath(), String.Format("{0}.log",System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)));
+             Logger logger = new Logger(Path.Combine(Path.GetTempPath(), String.Format("{0}.log",System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new VideoPlayerForm() { Logger = logger });

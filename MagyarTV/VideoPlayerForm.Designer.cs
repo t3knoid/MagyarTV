@@ -60,7 +60,6 @@
             this.btM2 = new System.Windows.Forms.Button();
             this.btM1 = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -235,7 +234,7 @@
             this.btDunaWorld.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btDunaWorld.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
             this.btDunaWorld.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btDunaWorld.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btDunaWorld.ForeColor = System.Drawing.Color.Transparent;
             this.btDunaWorld.ImageIndex = 0;
             this.btDunaWorld.ImageList = this.imageListDunaWorld;
             this.btDunaWorld.Location = new System.Drawing.Point(3, 408);
@@ -261,7 +260,7 @@
             this.btDuna.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btDuna.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
             this.btDuna.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btDuna.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btDuna.ForeColor = System.Drawing.Color.Transparent;
             this.btDuna.ImageIndex = 0;
             this.btDuna.ImageList = this.imageDuna;
             this.btDuna.Location = new System.Drawing.Point(3, 327);
@@ -287,7 +286,7 @@
             this.btM5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btM5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
             this.btM5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btM5.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btM5.ForeColor = System.Drawing.Color.Transparent;
             this.btM5.ImageIndex = 0;
             this.btM5.ImageList = this.imageListM5;
             this.btM5.Location = new System.Drawing.Point(3, 246);
@@ -313,7 +312,7 @@
             this.btM4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btM4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
             this.btM4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btM4.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btM4.ForeColor = System.Drawing.Color.Transparent;
             this.btM4.ImageIndex = 0;
             this.btM4.ImageList = this.imageListM4;
             this.btM4.Location = new System.Drawing.Point(3, 165);
@@ -339,7 +338,7 @@
             this.btM2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btM2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
             this.btM2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btM2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btM2.ForeColor = System.Drawing.Color.Transparent;
             this.btM2.ImageIndex = 0;
             this.btM2.ImageList = this.imageListM2;
             this.btM2.Location = new System.Drawing.Point(3, 84);
@@ -359,7 +358,7 @@
             this.btM1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
             this.btM1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btM1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btM1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btM1.ForeColor = System.Drawing.Color.Transparent;
             this.btM1.ImageIndex = 0;
             this.btM1.ImageList = this.imageListM1;
             this.btM1.Location = new System.Drawing.Point(3, 3);
@@ -404,8 +403,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VideoPlayerForm_FormClosing);
             this.Load += new System.EventHandler(this.VideoPlayerForm_Load);
             this.Resize += new System.EventHandler(this.VideoPlayerForm_Resize);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);

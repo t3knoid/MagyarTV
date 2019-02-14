@@ -68,8 +68,9 @@ namespace MagyarTV
         }
         private void ScheduleRecordingForm_Load(object sender, EventArgs e)
         {
+            MediaKlikk mediaKlikk = new MediaKlikk();
             BindingSource bindingSource = new BindingSource();
-            bindingSource.DataSource =  MediaKlikk.GetChannelNames(); ;
+            bindingSource.DataSource = mediaKlikk.GetChannelNames(); ;
             this.cbChannel.DataSource = bindingSource.DataSource;
         }
     }
