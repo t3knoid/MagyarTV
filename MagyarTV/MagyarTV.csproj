@@ -209,12 +209,10 @@
     <Folder Include="parsers\.idea\inspectionProfiles\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\VideoLAN.LibVLC.Windows.3.0.5\build\VideoLAN.LibVLC.Windows.targets" Condition="Exists('..\packages\VideoLAN.LibVLC.Windows.3.0.5\build\VideoLAN.LibVLC.Windows.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\VideoLAN.LibVLC.Windows.3.0.5\build\VideoLAN.LibVLC.Windows.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VideoLAN.LibVLC.Windows.3.0.5\build\VideoLAN.LibVLC.Windows.targets'))" />
     <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets'))" />
     <Error Condition="!Exists('..\packages\cef.redist.x64.3.3578.1863\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x64.3.3578.1863\build\cef.redist.x64.props'))" />
     <Error Condition="!Exists('..\packages\cef.redist.x86.3.3578.1863\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x86.3.3578.1863\build\cef.redist.x86.props'))" />
@@ -222,6 +220,7 @@
     <Error Condition="!Exists('..\packages\CefSharp.Common.71.0.0\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.71.0.0\build\CefSharp.Common.targets'))" />
     <Error Condition="!Exists('..\packages\CefSharp.WinForms.71.0.0\build\CefSharp.WinForms.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.WinForms.71.0.0\build\CefSharp.WinForms.props'))" />
     <Error Condition="!Exists('..\packages\CefSharp.WinForms.71.0.0\build\CefSharp.WinForms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.WinForms.71.0.0\build\CefSharp.WinForms.targets'))" />
+    <Error Condition="!Exists('..\packages\VideoLAN.LibVLC.Windows.3.0.6\build\VideoLAN.LibVLC.Windows.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VideoLAN.LibVLC.Windows.3.0.6\build\VideoLAN.LibVLC.Windows.targets'))" />
   </Target>
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets')" />
   <Import Project="..\packages\CefSharp.Common.71.0.0\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.71.0.0\build\CefSharp.Common.targets')" />
@@ -230,4 +229,5 @@
     <PostBuildEvent>if not exist "$(TargetDir)Python37" mkdir "$(TargetDir)Python37"
 xcopy /r /y /s /e "$(ProjectDir)Python_$(PlatformName)" "$(TargetDir)Python37"</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\VideoLAN.LibVLC.Windows.3.0.6\build\VideoLAN.LibVLC.Windows.targets" Condition="Exists('..\packages\VideoLAN.LibVLC.Windows.3.0.6\build\VideoLAN.LibVLC.Windows.targets')" />
 </Project>
