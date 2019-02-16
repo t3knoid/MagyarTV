@@ -258,16 +258,17 @@ namespace MagyarTV
                 error = mediaKlikk.StandardError.ToString();
                 Logger.Info(string.Format("URI={0}", uri));
                 mediaPlayer.Play(new Uri(uri));
+                currentChannelButton.ForeColor = Color.LightGreen;
+                currentChannelButton.ImageIndex = 1;
+                this.playToolStripMenuItem.Enabled = false;
             }
             catch (Exception ex)
             {
                 Logger.Error(string.Format("Failed playing channel {0}. {1}.", currentChannel.Name, error));
                 Logger.Error(ex);
+                Stop();
                 MessageBox.Show(String.Format("Error playing {0}. {1}. {2}", currentChannel.Name, error, ex.Message));
             }
-            currentChannelButton.ForeColor = Color.LightGreen ;
-            currentChannelButton.ImageIndex = 1;
-            this.playToolStripMenuItem.Enabled = false;
         }
         #endregion
 
