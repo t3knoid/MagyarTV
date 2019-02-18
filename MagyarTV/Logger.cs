@@ -31,7 +31,7 @@ namespace MagyarTV
         /// A constructor that allows to set a fully-qualified filename.
         /// </summary>
         /// <param name="file"></param>
-        public Logger(String file)
+        public Logger(string file)
         {
             logfile = file;
             Init();
