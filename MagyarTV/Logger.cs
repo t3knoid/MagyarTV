@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.IO;
 
-namespace Utilities
+namespace MagyarTV
 {
     /// <summary>
     /// A simple log class that allows to discreminately create different
