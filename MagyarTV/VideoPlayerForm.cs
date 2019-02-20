@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Diagnostics;
 using Utilities;
 using CefSharp.WinForms;
+using System.Net;
 
 namespace MagyarTV
 {
@@ -254,10 +255,61 @@ namespace MagyarTV
             try
             {
                 MediaKlikk mediaKlikk = new MediaKlikk();
-                string uri = mediaKlikk.GetChannelURI(currentChannel.IndexFeed).TrimEnd('\r', '\n');
+                Uri url = new Uri(mediaKlikk.GetChannelURI(currentChannel.IndexFeed).TrimEnd('\r', '\n')); // Gets the m3u8 URL.
                 error = mediaKlikk.StandardError.ToString();
-                Logger.Info(string.Format("URI={0}", uri));
-                mediaPlayer.Play(new Uri(uri));
+                Logger.Info(string.Format("URI={0}", url));
+
+                // Parse out all streams from the m3u8 
+                WebResponse response = null;
+                StreamReader reader = null;
+
+                try
+                {
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request.Method = "GET";
+                    response = request.GetResponse();
+                    reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
+                    Dictionary<string, Streams> streams = new Dictionary<string, Streams>();
+                    
+                    while (!reader.EndOfStream)
+                    {
+                        string line = reader.ReadLine();
+                        if (line.StartsWith("#EXT-X-STREAM-INF"))  // #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=468677,CODECS="avc1.42c00d,mp4a.40.2",RESOLUTION=320x180
+                        {
+                            string[] properties = line.Split(':')[1].Split(',');   // PROGRAM-ID=1,BANDWIDTH=468677,CODECS="avc1.42c00d,mp4a.40.2",RESOLUTION=320x180
+                            string programid = Array.Find(properties, s => s.StartsWith("PROGRAM-ID=")).Split('=')[1]; // 1
+                            string bandwidth = Array.Find(properties, s => s.StartsWith("BANDWIDTH=")).Split('=')[1]; // 468677
+                            string codecs = Array.Find(properties, s => s.StartsWith("CODECS=")).Split('=')[1]; // "avc1.42c00d,mp4a.40.2"
+                            string resolution = Array.Find(properties, s => s.StartsWith("RESOLUTION=")).Split('=')[1]; // 320x180                          
+                            string page = reader.ReadLine();      // 05.m3u8
+                            Uri uri = new Uri(url, ".");
+                            streams.Add(resolution, new Streams()
+                            {
+                                ProgramID = programid,
+                                Bandwidth = bandwidth,
+                                Codecs = codecs,
+                                Resolution = resolution,
+                                Uri = new Uri(uri,page),
+                            } );
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // handle error
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                    if (response != null)
+                        response.Close();
+                }
+
+                // At this point the streams dictionary contains all the streams in order of lowest to highest
+
+                mediaPlayer.Play(url);
                 currentChannelButton.ForeColor = Color.LightGreen;
                 currentChannelButton.ImageIndex = 1;
                 this.playToolStripMenuItem.Enabled = false;

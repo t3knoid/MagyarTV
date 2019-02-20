@@ -59,10 +59,18 @@
             this.btM2 = new System.Windows.Forms.Button();
             this.btM1 = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.streamsBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.streamsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.channelBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.streamsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.streamsBindingSource2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.streamsBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.channelBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.streamsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -88,7 +96,7 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -384,6 +392,22 @@
             this.flowLayoutPanel2.Size = new System.Drawing.Size(82, 504);
             this.flowLayoutPanel2.TabIndex = 8;
             // 
+            // streamsBindingSource2
+            // 
+            this.streamsBindingSource2.DataSource = typeof(MagyarTV.Streams);
+            // 
+            // streamsBindingSource1
+            // 
+            this.streamsBindingSource1.DataSource = typeof(MagyarTV.Streams);
+            // 
+            // channelBindingSource
+            // 
+            this.channelBindingSource.DataSource = typeof(MagyarTV.Channel);
+            // 
+            // streamsBindingSource
+            // 
+            this.streamsBindingSource.DataSource = typeof(MagyarTV.Streams);
+            // 
             // VideoPlayerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -405,6 +429,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.streamsBindingSource2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.streamsBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.channelBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.streamsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -440,6 +468,10 @@
         private System.Windows.Forms.ImageList imageListM5;
         private System.Windows.Forms.ImageList imageDuna;
         private System.Windows.Forms.ImageList imageListDunaWorld;
+        private System.Windows.Forms.BindingSource channelBindingSource;
+        private System.Windows.Forms.BindingSource streamsBindingSource;
+        private System.Windows.Forms.BindingSource streamsBindingSource2;
+        private System.Windows.Forms.BindingSource streamsBindingSource1;
     }
 }
 

@@ -129,6 +129,7 @@
     <Compile Include="AddRecordingForm.Designer.cs">
       <DependentUpon>AddRecordingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Streams.cs" />
     <Compile Include="TVGuide.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,6 +170,7 @@
     <None Include="parsers\.idea\parsers.iml" />
     <None Include="Properties\DataSources\Channel.datasource" />
     <None Include="Properties\DataSources\Channels.datasource" />
+    <None Include="Properties\DataSources\Streams.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
