@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Logger = Utilities.Logger;
 
 namespace MagyarTV
 {
@@ -17,7 +16,9 @@ namespace MagyarTV
 
         static void Main()
         {
-             Logger logger = new Logger(Path.Combine(Path.GetTempPath(), String.Format("{0}.log",System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)));
+            string tempFolder = Path.GetTempPath();
+            string logFile = Path.Combine(tempFolder, String.Format("{0}.log", System.Diagnostics.Process.GetCurrentProcess().MainModule.ModuleName));
+            Logger logger = new Logger(logFile);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new VideoPlayerForm() { Logger = logger });

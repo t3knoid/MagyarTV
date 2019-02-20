@@ -111,7 +111,7 @@ Section "MagyarTV" MagyarTV
 	call killapp
     
     SetOutPath "$INSTDIR"
-    File /r "..\MagyarTV\bin\x64\Release\*.*"
+    File /r "..\MagyarTV\bin\Release\*.*"
   
     ;Store installation folder
     WriteRegStr HKCU "Software\MagyarTV" "" $INSTDIR
