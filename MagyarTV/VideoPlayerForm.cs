@@ -242,6 +242,7 @@ namespace MagyarTV
             currentChannelButton.ForeColor = Color.Transparent;
             currentChannelButton.ImageIndex = 0;
             currentChannelButton.FlatAppearance.BorderColor = Color.White;
+            currentChannelButton.Update();
             //this.btPlay.Enabled = true;
             this.playToolStripMenuItem.Enabled = true;
         }
@@ -319,6 +320,7 @@ namespace MagyarTV
                 mediaPlayer.Play(url);
                 currentChannelButton.ForeColor = Color.LightGreen;
                 currentChannelButton.ImageIndex = 1;
+                currentChannelButton.Update();
                 this.playToolStripMenuItem.Enabled = false;
             }
             catch (Exception ex)
