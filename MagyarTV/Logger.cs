@@ -40,7 +40,7 @@ namespace MagyarTV
         private void Init()
         {
             // The following stream allows sharing of the log file with an external process
-            Stream myFile = new FileStream(logfile, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+            System.IO.Stream myFile = new FileStream(logfile, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
             /* Create a new text writer using the output stream, and add it to
              * the trace listeners. */
             TextWriterTraceListener myTextListener = new

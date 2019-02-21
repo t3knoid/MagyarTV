@@ -41,6 +41,7 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.schedulerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tVGuideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mediaPlayer = new Vlc.DotNet.Forms.VlcControl();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btStop = new System.Windows.Forms.Button();
@@ -136,7 +137,8 @@
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
             this.schedulerToolStripMenuItem,
-            this.tVGuideToolStripMenuItem});
+            this.tVGuideToolStripMenuItem,
+            this.resolutionToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -144,22 +146,28 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // schedulerToolStripMenuItem
             // 
             this.schedulerToolStripMenuItem.Name = "schedulerToolStripMenuItem";
-            this.schedulerToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.schedulerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.schedulerToolStripMenuItem.Text = "Scheduler";
             this.schedulerToolStripMenuItem.Click += new System.EventHandler(this.schedulerToolStripMenuItem_Click);
             // 
             // tVGuideToolStripMenuItem
             // 
             this.tVGuideToolStripMenuItem.Name = "tVGuideToolStripMenuItem";
-            this.tVGuideToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.tVGuideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.tVGuideToolStripMenuItem.Text = "TV Guide";
             this.tVGuideToolStripMenuItem.Click += new System.EventHandler(this.tVGuideToolStripMenuItem_Click);
+            // 
+            // resolutionToolStripMenuItem
+            // 
+            this.resolutionToolStripMenuItem.Name = "resolutionToolStripMenuItem";
+            this.resolutionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.resolutionToolStripMenuItem.Text = "Resolution";
             // 
             // mediaPlayer
             // 
@@ -394,11 +402,11 @@
             // 
             // streamsBindingSource2
             // 
-            this.streamsBindingSource2.DataSource = typeof(MagyarTV.Streams);
+            this.streamsBindingSource2.DataSource = typeof(MagyarTV.Stream);
             // 
             // streamsBindingSource1
             // 
-            this.streamsBindingSource1.DataSource = typeof(MagyarTV.Streams);
+            this.streamsBindingSource1.DataSource = typeof(MagyarTV.Stream);
             // 
             // channelBindingSource
             // 
@@ -406,7 +414,7 @@
             // 
             // streamsBindingSource
             // 
-            this.streamsBindingSource.DataSource = typeof(MagyarTV.Streams);
+            this.streamsBindingSource.DataSource = typeof(MagyarTV.Stream);
             // 
             // VideoPlayerForm
             // 
@@ -472,6 +480,7 @@
         private System.Windows.Forms.BindingSource streamsBindingSource;
         private System.Windows.Forms.BindingSource streamsBindingSource2;
         private System.Windows.Forms.BindingSource streamsBindingSource1;
+        private System.Windows.Forms.ToolStripMenuItem resolutionToolStripMenuItem;
     }
 }
 

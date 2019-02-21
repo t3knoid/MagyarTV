@@ -119,7 +119,7 @@
     <Compile Include="AddRecordingForm.Designer.cs">
       <DependentUpon>AddRecordingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Streams.cs" />
+    <Compile Include="Stream.cs" />
     <Compile Include="TVGuide.cs">
       <SubType>Form</SubType>
     </Compile>

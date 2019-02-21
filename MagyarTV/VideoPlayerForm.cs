@@ -268,7 +268,7 @@ namespace MagyarTV
                     request.Method = "GET";
                     response = request.GetResponse();
                     reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
-                    Dictionary<string, Streams> streams = new Dictionary<string, Streams>();
+                    Dictionary<string, Stream> streams = new Dictionary<string, Stream>();
                     
                     while (!reader.EndOfStream)
                     {
@@ -282,7 +282,7 @@ namespace MagyarTV
                             string resolution = Array.Find(properties, s => s.StartsWith("RESOLUTION=")).Split('=')[1]; // 320x180                          
                             string page = reader.ReadLine();      // 05.m3u8
                             Uri uri = new Uri(url, ".");
-                            streams.Add(resolution, new Streams()
+                            streams.Add(resolution, new Stream()
                             {
                                 ProgramID = programid,
                                 Bandwidth = bandwidth,
@@ -291,6 +291,14 @@ namespace MagyarTV
                                 Uri = new Uri(uri,page),
                             } );
                         }
+                    }
+
+                    // Add streams submenu entries to resolution menu
+                    this.resolutionToolStripMenuItem.DropDownItems.Clear();
+                    foreach (KeyValuePair<string, Stream> stream in streams)
+                    {
+                        var entry = new ToolStripMenuItem(stream.Key.ToString(), null, (sender, e) => ChangeResolution(stream.Key, stream.Value.Uri));
+                        this.resolutionToolStripMenuItem.DropDownItems.Add(entry);
                     }
                 }
                 catch (Exception ex)
@@ -320,6 +328,12 @@ namespace MagyarTV
                 Stop();
                 MessageBox.Show(String.Format("Error playing {0}. {1}. {2}", currentChannel.Name, error, ex.Message));
             }
+        }
+
+        private void ChangeResolution(string resolution, Uri uri)
+        {
+            Logger.Info(String.Format("Changing resolution to {0}", resolution));
+            mediaPlayer.Play(uri);
         }
         #endregion
 
@@ -401,6 +415,11 @@ namespace MagyarTV
         {
             Button selectedButton = (Button)sender;
             selectedButton.ImageIndex = 0;
+        }
+
+        private void sampleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
