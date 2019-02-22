@@ -64,6 +64,7 @@
             this.streamsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.channelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.streamsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.bgwGetURI = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -146,27 +147,27 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // schedulerToolStripMenuItem
             // 
             this.schedulerToolStripMenuItem.Name = "schedulerToolStripMenuItem";
-            this.schedulerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.schedulerToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.schedulerToolStripMenuItem.Text = "Scheduler";
             this.schedulerToolStripMenuItem.Click += new System.EventHandler(this.schedulerToolStripMenuItem_Click);
             // 
             // tVGuideToolStripMenuItem
             // 
             this.tVGuideToolStripMenuItem.Name = "tVGuideToolStripMenuItem";
-            this.tVGuideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tVGuideToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.tVGuideToolStripMenuItem.Text = "TV Guide";
             this.tVGuideToolStripMenuItem.Click += new System.EventHandler(this.tVGuideToolStripMenuItem_Click);
             // 
             // resolutionToolStripMenuItem
             // 
             this.resolutionToolStripMenuItem.Name = "resolutionToolStripMenuItem";
-            this.resolutionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.resolutionToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.resolutionToolStripMenuItem.Text = "Resolution";
             // 
             // mediaPlayer
@@ -416,6 +417,12 @@
             // 
             this.streamsBindingSource.DataSource = typeof(MagyarTV.Stream);
             // 
+            // bgwGetURI
+            // 
+            this.bgwGetURI.WorkerSupportsCancellation = true;
+            this.bgwGetURI.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetURI_DoWork);
+            this.bgwGetURI.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetURI_RunWorkerCompleted);
+            // 
             // VideoPlayerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -481,6 +488,7 @@
         private System.Windows.Forms.BindingSource streamsBindingSource2;
         private System.Windows.Forms.BindingSource streamsBindingSource1;
         private System.Windows.Forms.ToolStripMenuItem resolutionToolStripMenuItem;
+        private System.ComponentModel.BackgroundWorker bgwGetURI;
     }
 }
 
