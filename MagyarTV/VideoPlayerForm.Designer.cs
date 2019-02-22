@@ -65,6 +65,7 @@
             this.streamsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.channelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.streamsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.bgwRecording = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -423,6 +424,12 @@
             // 
             this.streamsBindingSource.DataSource = typeof(MagyarTV.Stream);
             // 
+            // bgwRecording
+            // 
+            this.bgwRecording.WorkerSupportsCancellation = true;
+            this.bgwRecording.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwRecording_DoWork);
+            this.bgwRecording.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwRecording_RunWorkerCompleted);
+            // 
             // VideoPlayerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -491,6 +498,7 @@
         private System.Windows.Forms.BindingSource streamsBindingSource1;
         private System.Windows.Forms.ToolStripMenuItem resolutionToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker bgwGetURI;
+        private System.ComponentModel.BackgroundWorker bgwRecording;
     }
 }
 

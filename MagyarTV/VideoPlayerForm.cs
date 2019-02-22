@@ -16,6 +16,7 @@ using System.Net;
 
 namespace MagyarTV
 {
+   
     public partial class VideoPlayerForm : Form
     {
         Channel currentChannel;
@@ -23,21 +24,14 @@ namespace MagyarTV
         Recording currentRecording = new Recording();
         Dictionary<string, Channel> channels = new Dictionary<string, Channel>();
 
-        BackgroundWorker recordingWorker;
-        public BackgroundWorker RecordingWorker
-        {
-            get
-            {
-                return recordingWorker;
-            }
-        }
-
         public Logger Logger { get; internal set; }
 
+        #region Constructor
         public VideoPlayerForm()
         {
             InitializeComponent();
         }
+        #endregion
 
         #region Event Handlers
         private void vlcControl2_VlcLibDirectoryNeeded(object sender, Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs e)
@@ -100,6 +94,23 @@ namespace MagyarTV
             currentChannel = channels["M1"];
             currentChannelButton = btM1;
         }
+
+        private void buttonMouseHover(object sender, EventArgs e)
+        {
+            Button selectedButton = (Button)sender;
+            selectedButton.ImageIndex = 1;
+            selectedButton.Update();
+            selectedButton.Refresh();
+        }
+
+        private void buttonMouseLeave(object sender, EventArgs e)
+        {
+            Button selectedButton = (Button)sender;
+            selectedButton.ImageIndex = 0;
+            selectedButton.Update();
+            selectedButton.Refresh();
+        }
+
         #endregion
 
         #region Menu Handlers
@@ -199,11 +210,8 @@ namespace MagyarTV
         {
             if (!currentChannel.IsRecording)
             {
-                recordingWorker = new BackgroundWorker();
-                recordingWorker.DoWork += new DoWorkEventHandler(Record_Worker); // This does the job ...
-                recordingWorker.WorkerSupportsCancellation = true; // This allows cancellation.
-                recordingWorker.RunWorkerAsync(currentChannel);
-                //btRecord.Enabled = false;
+                bgwRecording.WorkerSupportsCancellation = true; // This allows cancellation.
+                bgwRecording.RunWorkerAsync(currentChannel);
                 this.recordToolStripMenuItem.Enabled = false;
             }
         }
@@ -227,10 +235,9 @@ namespace MagyarTV
         private void StopRecording()
         {
             Logger.Info(String.Format("Stopped recording channel {0}.", currentChannel.Name));
-            recordingWorker.CancelAsync(); // Stops recording thread
+            bgwRecording.CancelAsync(); // Stops recording thread
             btRecord.ForeColor = Color.Black;
             currentChannel.IsRecording = false;
-            //btRecord.Enabled = true;
             this.recordToolStripMenuItem.Enabled = true;
         }
 
@@ -243,11 +250,19 @@ namespace MagyarTV
             currentChannelButton.ImageIndex = 0;
             currentChannelButton.FlatAppearance.BorderColor = Color.White;
             currentChannelButton.Update();
-            //this.btPlay.Enabled = true;
+            currentChannelButton.Refresh();
             this.playToolStripMenuItem.Enabled = true;
         }
         private void Play()
         {
+            // Make sure to cancel current operation
+            if (bgwGetURI.IsBusy)
+            {
+                bgwGetURI.CancelAsync();
+            }
+
+            while (bgwGetURI.IsBusy) { Application.DoEvents(); }
+
             currentChannel.IsPlaying = true;
             currentChannel.StreamInfo = new VideoMetadata() { Title = currentChannel.Name };
             Logger.Info(String.Format("Playing channel {0}.", currentChannel.Name));
@@ -258,6 +273,7 @@ namespace MagyarTV
                 currentChannelButton.ForeColor = Color.LightGreen;
                 currentChannelButton.ImageIndex = 1;
                 currentChannelButton.Update();
+                currentChannelButton.Refresh();
                 this.playToolStripMenuItem.Enabled = false;
             }
             catch (Exception ex)
@@ -275,7 +291,9 @@ namespace MagyarTV
             mediaPlayer.Play(uri);
         }
         #endregion
-        private void Record_Worker(object sender, DoWorkEventArgs e)
+
+        #region Record background worker
+        private void bgwRecording_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker backgroundWorker = sender as BackgroundWorker;
             Channel channel = (Channel)e.Argument;
@@ -324,7 +342,7 @@ namespace MagyarTV
                             }
                             if (backgroundWorker.CancellationPending)
                             {
-                                Logger.Info(String.Format("Canelled recording channel {0}.", currentChannel.Name));
+                                Logger.Info(String.Format("Cancelled recording channel {0}.", currentChannel.Name));
                                 btRecord.ForeColor = Color.Black;
                                 e.Cancel = true;
                             }
@@ -340,27 +358,32 @@ namespace MagyarTV
                 MessageBox.Show(String.Format("Failed to start recording. {0}", ex.Message));
             }
         }
-        #region Background worker
+
+        private void bgwRecording_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+        }
 
         #endregion
 
-        private void buttonMouseHover(object sender, EventArgs e)
-        {
-            Button selectedButton = (Button)sender;
-            selectedButton.ImageIndex = 1;
-        }
-
-        private void buttonMouseLeave(object sender, EventArgs e)
-        {
-            Button selectedButton = (Button)sender;
-            selectedButton.ImageIndex = 0;
-        }
-
         private void bgwGetURI_DoWork(object sender, DoWorkEventArgs e)
         {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            if (worker.CancellationPending)
+            {
+                Logger.Info("Cancelling work.");
+                return;
+            }
+
             string error = String.Empty;
             MediaKlikk mediaKlikk = new MediaKlikk();
             Uri url = new Uri(mediaKlikk.GetChannelURI(e.Argument.ToString())); // Gets the m3u8 URL.
+            if (worker.CancellationPending)
+            {
+                Logger.Info("Cancelling work.");
+                return;
+            }
             error = mediaKlikk.StandardError.ToString();
             Logger.Info(string.Format("URI={0}", url));
 
@@ -371,7 +394,18 @@ namespace MagyarTV
         private void bgwGetURI_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             var url = (Uri)e.Result;
-            mediaPlayer.Play(url);
+            if (url == null) return;
+
+            try
+            {
+                mediaPlayer.Play(url);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(String.Format("Error playing {0}",url.ToString()));
+                Logger.Error(ex);
+                return;
+            }
 
             // Parse out all streams from the m3u8 
             WebResponse response = null;
@@ -407,12 +441,21 @@ namespace MagyarTV
                             Uri = new Uri(uri, page),
                         });
                     }
+
+                    // Add streams submenu entries to resolution menu
+                    this.resolutionToolStripMenuItem.DropDownItems.Clear();
+                    foreach (KeyValuePair<string, Stream> stream in streams)
+                    {
+                        var entry = new ToolStripMenuItem(stream.Key.ToString(), null, (source, args) => ChangeResolution(stream.Key, stream.Value.Uri));
+                        this.resolutionToolStripMenuItem.DropDownItems.Add(entry);
+                    }
+
                 }
             }
             catch (Exception ex)
             {
-                // handle error
-                MessageBox.Show(ex.Message);
+                Logger.Error(String.Format("Error parsing {0}",uri));
+                Logger.Error(ex);
             }
             finally
             {
@@ -422,15 +465,7 @@ namespace MagyarTV
                     response.Close();
             }
 
-
-            // Add streams submenu entries to resolution menu
-            this.resolutionToolStripMenuItem.DropDownItems.Clear();
-            foreach (KeyValuePair<string, Stream> stream in streams)
-            {
-                var entry = new ToolStripMenuItem(stream.Key.ToString(), null, (source, args) => ChangeResolution(stream.Key, stream.Value.Uri));
-                this.resolutionToolStripMenuItem.DropDownItems.Add(entry);
-            }
-
         }
+
     }
 }
