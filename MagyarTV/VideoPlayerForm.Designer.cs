@@ -60,11 +60,11 @@
             this.btM2 = new System.Windows.Forms.Button();
             this.btM1 = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.bgwGetURI = new System.ComponentModel.BackgroundWorker();
             this.streamsBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.streamsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.channelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.streamsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.bgwGetURI = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -401,6 +401,12 @@
             this.flowLayoutPanel2.Size = new System.Drawing.Size(82, 504);
             this.flowLayoutPanel2.TabIndex = 8;
             // 
+            // bgwGetURI
+            // 
+            this.bgwGetURI.WorkerSupportsCancellation = true;
+            this.bgwGetURI.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetURI_DoWork);
+            this.bgwGetURI.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetURI_RunWorkerCompleted);
+            // 
             // streamsBindingSource2
             // 
             this.streamsBindingSource2.DataSource = typeof(MagyarTV.Stream);
@@ -417,12 +423,6 @@
             // 
             this.streamsBindingSource.DataSource = typeof(MagyarTV.Stream);
             // 
-            // bgwGetURI
-            // 
-            this.bgwGetURI.WorkerSupportsCancellation = true;
-            this.bgwGetURI.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetURI_DoWork);
-            this.bgwGetURI.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetURI_RunWorkerCompleted);
-            // 
             // VideoPlayerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -434,7 +434,9 @@
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
+            this.MinimumSize = new System.Drawing.Size(800, 663);
             this.Name = "VideoPlayerForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "MagyarTV";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VideoPlayerForm_FormClosing);
             this.Load += new System.EventHandler(this.VideoPlayerForm_Load);
