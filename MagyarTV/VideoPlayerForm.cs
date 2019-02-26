@@ -21,6 +21,8 @@ namespace MagyarTV
     {
         Channel currentChannel;
         Button currentChannelButton;
+        Uri currentStream;
+        Dictionary<string, Stream> streams = new Dictionary<string, Stream>();
         Recording currentRecording = new Recording();
         Dictionary<string, Channel> channels = new Dictionary<string, Channel>();
 
@@ -223,7 +225,7 @@ namespace MagyarTV
                 if (result == DialogResult.Yes)
                 {
                     StopRecording();
-                    StopPlaying();
+                    //StopPlaying();
                 }
             }
             else
@@ -393,16 +395,16 @@ namespace MagyarTV
 
         private void bgwGetURI_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            var url = (Uri)e.Result;
-            if (url == null) return;
+            currentStream = (Uri)e.Result;
+            if (currentStream == null) return;
 
             try
             {
-                mediaPlayer.Play(url);
+                mediaPlayer.Play(currentStream);
             }
             catch (Exception ex)
             {
-                Logger.Error(String.Format("Error playing {0}",url.ToString()));
+                Logger.Error(String.Format("Error playing {0}", currentStream.ToString()));
                 Logger.Error(ex);
                 return;
             }
@@ -411,11 +413,11 @@ namespace MagyarTV
             WebResponse response = null;
             StreamReader reader = null;
             Uri uri = null;
-            Dictionary<string, Stream> streams = new Dictionary<string, Stream>();
+            //Dictionary<string, Stream> streams = new Dictionary<string, Stream>();
 
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(currentStream);
                 request.Method = "GET";
                 response = request.GetResponse();
                 reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
@@ -431,7 +433,7 @@ namespace MagyarTV
                         string codecs = Array.Find(properties, s => s.StartsWith("CODECS=")).Split('=')[1]; // "avc1.42c00d,mp4a.40.2"
                         string resolution = Array.Find(properties, s => s.StartsWith("RESOLUTION=")).Split('=')[1]; // 320x180                          
                         string page = reader.ReadLine();      // 05.m3u8
-                        uri = new Uri(url, ".");
+                        uri = new Uri(currentStream, ".");
                         streams.Add(resolution, new Stream()
                         {
                             ProgramID = programid,
