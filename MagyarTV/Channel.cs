@@ -20,6 +20,7 @@ namespace MagyarTV
         public bool IsRecording { get; set; }
         public bool IsPlaying { get; set; }
         public VideoMetadata StreamInfo { get; set; }
+        public string TVGuideEntry { get; set; }
     }
 
 }

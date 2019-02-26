@@ -24,10 +24,7 @@ namespace MagyarTV
         }
 
         private void TVGuide_Load(object sender, EventArgs e)
-        {
-            CefSettings settings = new CefSettings();
-
-            Cef.Initialize(settings);
+        {             
             chromeBrowser = new ChromiumWebBrowser(Url);
             this.Controls.Add(chromeBrowser);
             chromeBrowser.Dock = DockStyle.Fill;
@@ -35,7 +32,7 @@ namespace MagyarTV
 
         private void TVGuide_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Cef.Shutdown();
+            
         }
     }
 }
