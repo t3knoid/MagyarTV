@@ -138,10 +138,9 @@ namespace MagyarTV
         private void tVGuideToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string today = DateTime.Now.ToString("yyyyMMdd");
-            string urlstring = String.Format("http://tv.animare.hu/default.aspx?c={0}&t={1}", currentChannel.ID, today);
+            string urlstring = String.Format("http://tv.animare.hu/default.aspx?c={0}&t={1}", currentChannel.TVGuideEntry,today);
 
-            TVGuide tVGuide = new TVGuide() { Url = urlstring };
-            tVGuide.Show();
+            LaunchTVGuide(urlstring);
         }
 
         #endregion
@@ -291,6 +290,13 @@ namespace MagyarTV
             Logger.Info(String.Format("Changing resolution to {0}", resolution));
             mediaPlayer.Play(uri);
         }
+
+        private void LaunchTVGuide(string url)
+        {
+            TVGuide tVGuide = new TVGuide() { Url = url };
+            tVGuide.Show();
+
+        }
         #endregion
 
         #region Record background worker
@@ -367,6 +373,7 @@ namespace MagyarTV
 
         #endregion
 
+        #region Get URL background worker
         private void bgwGetURI_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
@@ -391,7 +398,6 @@ namespace MagyarTV
             e.Result = url;
 
         }
-
         private void bgwGetURI_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             currentStream = (Uri)e.Result;
@@ -467,6 +473,6 @@ namespace MagyarTV
             }
 
         }
-
+        #endregion
     }
 }

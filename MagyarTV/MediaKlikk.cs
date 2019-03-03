@@ -16,6 +16,7 @@ namespace MagyarTV
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv1live",
             Info = "https://www.mediaklikk.hu/m1-elo",
             Name = "M1",
+            TVGuideEntry = "1",
         };
 
         static private Channel M2 => new Channel()
@@ -23,36 +24,42 @@ namespace MagyarTV
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv2live",
             Info = "https://www.mediaklikk.hu/m2-elo",
             Name = "M2",
+            TVGuideEntry = "2",
         };
         static private Channel M3 => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv3live",
             Info = "https://www.mediaklikk.hu/m3-elo/",
             Name = "M3",
+            TVGuideEntry = "153",
         };
         static private Channel M4 => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv4live",
             Info = "https://www.mediaklikk.hu/m4-elo/",
             Name = "M4",
+            TVGuideEntry = "170",
         };
         static private Channel M5 => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv5live",
             Info = "https://www.mediaklikk.hu/m5-elo",
             Name = "M5",
+            TVGuideEntry = "176",
         };
         static private Channel Duna => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=dunalive",
             Info = "https://www.mediaklikk.hu/duna-elo",
             Name = "Duna",
+            TVGuideEntry = "6",
         };
         static private Channel DunaWorld => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=dunaworldlive",
             Info = "https://www.mediaklikk.hu/duna-world-elo",
             Name = "Duna World",
+            TVGuideEntry = "97",
         };
 
         private string standardError;

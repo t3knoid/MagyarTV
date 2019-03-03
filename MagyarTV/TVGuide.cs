@@ -188,7 +188,7 @@ namespace MagyarTV
             // A typical string to split are:
             // "2019. március 3. vasárnap"
             // "2019. március 2. - 8."
-            string[] parts = datestring.Trim().Split('.');  
+            string[] parts = datestring.Trim().Split('.');
             ShowDate showDate = new ShowDate()
             {
                 Year = parts[0].Trim(),
@@ -198,7 +198,6 @@ namespace MagyarTV
             };
             return showDate;
         }
-
         private void TVGuide_FormClosing(object sender, FormClosingEventArgs e)
         {
 
