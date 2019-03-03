@@ -11,7 +11,6 @@ using System.IO;
 using System.Threading;
 using System.Reflection;
 using System.Diagnostics;
-using CefSharp.WinForms;
 using System.Net;
 
 namespace MagyarTV
@@ -139,7 +138,7 @@ namespace MagyarTV
         private void tVGuideToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string today = DateTime.Now.ToString("yyyyMMdd");
-            string urlstring = String.Format("http://tv.animare.hu/default.aspx?t={0}", today);
+            string urlstring = String.Format("http://tv.animare.hu/default.aspx?c={0}&t={1}", currentChannel.ID, today);
 
             TVGuide tVGuide = new TVGuide() { Url = urlstring };
             tVGuide.Show();
