@@ -17,10 +17,6 @@ namespace MagyarTV
 {
     public partial class TVGuide : Form
     {
-
-        public string Url { get; internal set; }
-        public Dictionary<string, List<ShowEntry>> ShowsbyDate { get; internal set; }
-
         private Dictionary<string, string> months = new Dictionary<string, string>
         {
             { "január", "Jan" },
@@ -48,6 +44,8 @@ namespace MagyarTV
             { "vasárnap", "Sun" },
         };
 
+        string urlFormat = "http://tv.animare.hu/default.aspx?c={0}&t={1}";
+
         public TVGuide()
         {
             InitializeComponent();
@@ -55,22 +53,38 @@ namespace MagyarTV
 
         private void TVGuide_Load(object sender, EventArgs e)
         {
-            string pathToCachedFile = Path.Combine(Path.GetTempPath(), "MagyarTV-TVGuide-" + DateTime.Now.ToString("yyyy-dd-M-HH") + ".html"); // Web page is fetched at the very least on top of each hour
+            MediaKlikk mediaKlikk = new MediaKlikk();
+            Dictionary<string, Channel> channels = mediaKlikk.GetChannels();
+            Dictionary<string, List<ShowEntry>> showSchedules = new Dictionary<string, List<ShowEntry>>();
+            foreach (KeyValuePair<string, Channel> channel in channels)
+            {
+                List<ShowEntry> schedule = GetShowScheduleList(channels[channel.Key]);
+                showSchedules.Add(channel.Key, schedule);
+            }
+            
+        }
+
+        private List<ShowEntry> GetShowScheduleList(Channel channel)
+        {
+            string today = DateTime.Now.ToString("yyyyMMdd");
+            string pathToCachedFile = Path.Combine(Path.GetTempPath(), "MagyarTV-TVGuide-" + channel.Name + "-" + DateTime.Now.ToString("yyyy-dd-M-HH") + ".html"); // Web page is fetched at the very least on top of each hour
             HtmlAgilityPack.HtmlDocument htmlDocument = LoadFromCachedHtmlFile(pathToCachedFile);
 
             if (htmlDocument == null) // If there is no cached file, load it from the given URL
             {
-                // Load from given URL
+                string url = String.Format(urlFormat, channel.TVGuideEntry, today);
                 HtmlWeb browser = new HtmlWeb();
-                htmlDocument = browser.Load(Url);
+                htmlDocument = browser.Load(url);
                 FileStream sw = new FileStream(pathToCachedFile, FileMode.Create);
                 htmlDocument.Save(sw);
                 sw.Close();
             }
-            
-            List<string> dateSeparatorList = GetdateSeparatorList(htmlDocument);
-            Dictionary<string, List<ShowEntry>> showList = GetShowList(htmlDocument, dateSeparatorList);
 
+            List<string> dateSeparatorList = GetdateSeparatorList(htmlDocument);
+            // Dictionary<string, List<ShowEntry>> showList = GetShowList(htmlDocument, dateSeparatorList);
+            List<ShowEntry> showScheduleList = GetShowList(channel, htmlDocument, dateSeparatorList);
+
+            return showScheduleList;
         }
 
         /// <summary>
@@ -106,7 +120,8 @@ namespace MagyarTV
         /// <param name="pageresult"></param>
         /// <param name="dateSeparatorList"></param>
         /// <returns></returns>
-        private Dictionary<string, List<ShowEntry>> GetShowList(HtmlAgilityPack.HtmlDocument pageresult, List<string> dateSeparatorList)
+        //private Dictionary<string, List<ShowEntry>> GetShowList(HtmlAgilityPack.HtmlDocument pageresult, List<string> dateSeparatorList)
+        private List<ShowEntry> GetShowList(Channel channel, HtmlAgilityPack.HtmlDocument pageresult, List<string> dateSeparatorList)
         {
             HtmlAgilityPack.HtmlNodeCollection shows = pageresult.DocumentNode.SelectNodes("//*[starts-with(@id, \"tv\")]/div[contains(@class,\"w2\")]"); // Each node is a show entry.
             string descriptionXPath = "//*[contains(concat( \" \", @class, \" \" ), concat( \" \", \"w5\", \" \" ))]";
@@ -116,8 +131,8 @@ namespace MagyarTV
             // Iterate the list of shows and group by date
             string dayoftheweekIndex = dateSeparatorList[0];
             List<ShowEntry> showsofthedayList = new List<ShowEntry>(); // Holds all of the shows for a given day
-            Dictionary<string, List<ShowEntry>> showsbyDate = new Dictionary<string, List<ShowEntry>>();
-            showsbyDate.Add(dayoftheweekIndex, showsofthedayList);
+            //Dictionary<string, List<ShowEntry>> showsbyDate = new Dictionary<string, List<ShowEntry>>();
+            //showsbyDate.Add(dayoftheweekIndex, showsofthedayList);
             string formattedDate = GetFormattedShowDate(dayoftheweekIndex);
 
             foreach (HtmlAgilityPack.HtmlNode show in shows)
@@ -127,17 +142,17 @@ namespace MagyarTV
                 string match = null;
                 try
                 {
-                    match = dateSeparatorList.First(stringToCheck => stringToCheck.Contains(show.InnerText));  // Check if the item is a date separator
+                    match = dateSeparatorList.Find(stringToCheck => stringToCheck.Equals(show.InnerText));  // Check if the item is a date separator
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     match = null;
                 }
                 if (match != null) // The node is a date separator
                 {
                     dayoftheweekIndex = match;
-                    showsofthedayList = new List<ShowEntry>();
-                    showsbyDate.Add(dayoftheweekIndex, showsofthedayList);
+                    //showsofthedayList = new List<ShowEntry>();
+                    //showsbyDate.Add(dayoftheweekIndex, showsofthedayList);
                     formattedDate = GetFormattedShowDate(dayoftheweekIndex);
                 }
                 else
@@ -175,22 +190,25 @@ namespace MagyarTV
                     {
                         showProperty = pr.DocumentNode.SelectSingleNode(showPropertyXPath).InnerText;
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         showProperty = "";
                     }
                     ShowEntry showEntry = new ShowEntry()
                     {
-                        Title = showTitle,
-                        Description = description,
-                        Properties = showProperty,
+                        Channel = channel,
+                        Title = showTitle.Trim(),
+                        Description = description.Trim(),
+                        Properties = showProperty.Trim(),
                         StartTime = timeStart
                     };
-                    showsbyDate[dayoftheweekIndex].Add(showEntry);
+                    showsofthedayList.Add(showEntry);
+                    //showsbyDate[dayoftheweekIndex].Add(showEntry);
                 }
             }
 
-            return showsbyDate;
+            //return showsbyDate;
+            return showsofthedayList;
         }
 
         private static List<string> GetdateSeparatorList(HtmlAgilityPack.HtmlDocument pageresult)
@@ -254,8 +272,9 @@ namespace MagyarTV
 
     public class ShowEntry
     {
+        public Channel Channel { get; set; }
         public string Title { get; set; }
-        public DateTime? StartTime { get; set; }
+        public DateTime StartTime { get; set; }
         public string Properties { get; set; }
         public string Description { get; set; }
     }

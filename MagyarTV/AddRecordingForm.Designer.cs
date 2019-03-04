@@ -232,7 +232,7 @@
             // 
             // channelBindingSource
             // 
-            this.channelBindingSource.DataSource = typeof(MagyarTV.Channel);
+            this.channelBindingSource.DataSource = typeof(MagyarTV.Stream);
             // 
             // AddRecordingForm
             // 
