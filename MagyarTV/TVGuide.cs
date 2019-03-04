@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,31 +21,31 @@ namespace MagyarTV
         public string Url { get; internal set; }
         public Dictionary<string, List<ShowEntry>> ShowsbyDate { get; internal set; }
 
-        private Dictionary<string, int> month = new Dictionary<string, int>
+        private Dictionary<string, string> months = new Dictionary<string, string>
         {
-            { "Január", 1 },
-            { "Február", 2 },
-            { "Március", 3 },
-            { "Április", 4 },
-            { "Május", 5 },
-            { "Június", 6 },
-            { "Július", 7 },
-            { "Augusztus", 8 },
-            { "Szeptember", 9 },
-            { "október", 10 },
-            { "November", 11 },
-            { "December", 12 }
+            { "január", "Jan" },
+            { "február", "Feb" },
+            { "március", "Mar" },
+            { "április", "Apr" },
+            { "május", "May" },
+            { "június", "Jun" },
+            { "július", "Jul" },
+            { "augusztus", "Aug" },
+            { "szeptember", "Sep" },
+            { "október", "Oct" },
+            { "november", "Nov" },
+            { "december", "Dec" }
         };
 
-        private Dictionary<string, int> daysoftheweek = new Dictionary<string, int>
+        private Dictionary<string, string> daysoftheweek = new Dictionary<string, string>
         {
-            { "hétfő", 1 },
-            { "kedd", 2 },
-            { "szerda", 3 },
-            { "csütörtök", 4 },
-            { "péntek", 5 },
-            { "szombat", 6 },
-            { "vasárnap", 7 },
+            { "hétfő", "Mon" },
+            { "kedd", "Tue" },
+            { "szerda", "Wed" },
+            { "csütörtök", "Thu" },
+            { "péntek", "Fri" },
+            { "szombat", "Sat" },
+            { "vasárnap", "Sun" },
         };
 
         public TVGuide()
@@ -53,13 +55,49 @@ namespace MagyarTV
 
         private void TVGuide_Load(object sender, EventArgs e)
         {
-            HtmlWeb browser = new HtmlWeb();
-            HtmlAgilityPack.HtmlDocument pageresult = browser.Load("http://tv.animare.hu/default.aspx?c=3&t=20190302");
+            string pathToCachedFile = Path.Combine(Path.GetTempPath(), "MagyarTV-TVGuide-" + DateTime.Now.ToString("yyyy-dd-M-HH") + ".html"); // Web page is fetched at the very least on top of each hour
+            HtmlAgilityPack.HtmlDocument htmlDocument = LoadFromCachedHtmlFile(pathToCachedFile);
 
+            if (htmlDocument == null) // If there is no cached file, load it from the given URL
+            {
+                // Load from given URL
+                HtmlWeb browser = new HtmlWeb();
+                htmlDocument = browser.Load(Url);
+                FileStream sw = new FileStream(pathToCachedFile, FileMode.Create);
+                htmlDocument.Save(sw);
+                sw.Close();
+            }
+            
+            List<string> dateSeparatorList = GetdateSeparatorList(htmlDocument);
+            Dictionary<string, List<ShowEntry>> showList = GetShowList(htmlDocument, dateSeparatorList);
 
-            List<string> dateSeparatorList = GetdateSeparatorList(pageresult);
-            Dictionary<string, List<ShowEntry>> showList = GetShowList(pageresult, dateSeparatorList);
+        }
 
+        /// <summary>
+        /// Load from a saved page
+        /// </summary>
+        /// <param name="cachedFile">Fully qualified path to the cache file.</param>
+        /// <returns></returns>
+        private HtmlAgilityPack.HtmlDocument LoadFromCachedHtmlFile(string cachedFile)
+        {
+            HtmlAgilityPack.HtmlWeb browser = new HtmlWeb();
+            HtmlAgilityPack.HtmlDocument htmlDocument = null;
+
+            if (File.Exists(cachedFile))
+            {
+                try
+                {
+                    htmlDocument = new HtmlAgilityPack.HtmlDocument();
+                    string cachedHtmlFileText = File.ReadAllText(cachedFile);
+                    htmlDocument.LoadHtml(cachedHtmlFileText);
+                }
+                catch (Exception ex)
+                {
+                    // Log failure here
+                }
+            }
+
+            return htmlDocument;
         }
 
         /// <summary>
@@ -80,6 +118,8 @@ namespace MagyarTV
             List<ShowEntry> showsofthedayList = new List<ShowEntry>(); // Holds all of the shows for a given day
             Dictionary<string, List<ShowEntry>> showsbyDate = new Dictionary<string, List<ShowEntry>>();
             showsbyDate.Add(dayoftheweekIndex, showsofthedayList);
+            string formattedDate = GetFormattedShowDate(dayoftheweekIndex);
+
             foreach (HtmlAgilityPack.HtmlNode show in shows)
             {
                 if (String.IsNullOrEmpty(show.InnerText)) continue; // Make sure there is an entry
@@ -98,11 +138,12 @@ namespace MagyarTV
                     dayoftheweekIndex = match;
                     showsofthedayList = new List<ShowEntry>();
                     showsbyDate.Add(dayoftheweekIndex, showsofthedayList);
+                    formattedDate = GetFormattedShowDate(dayoftheweekIndex);
                 }
                 else
                 {
                     string showTitle = String.Empty;
-                    string timeStart;
+                    DateTime timeStart; // nullable
                     string description;
                     string showProperty;
 
@@ -111,19 +152,22 @@ namespace MagyarTV
                     try
                     {
                         string[] summaryTime = pr.DocumentNode.SelectSingleNode(summaryTimeXPath).InnerText.Split();
-                        timeStart = summaryTime[0].Trim();
+                        string datetime = formattedDate + " " + summaryTime[0].Trim() + ":00";
+                        CultureInfo culture = new CultureInfo("hu-HU");
+                        timeStart = Convert.ToDateTime(datetime,culture);
+                        timeStart = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(timeStart, TimeZoneInfo.FindSystemTimeZoneById("Central Europe Standard Time").Id, TimeZoneInfo.Local.Id);
                         showTitle = String.Join(" ", summaryTime.Skip(1).ToArray());  // Remove first item after split
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        timeStart = "";
+                        timeStart = DateTime.MinValue;
                         showTitle = "";
                     }
                     try
                     {
                         description = pr.DocumentNode.SelectSingleNode(descriptionXPath).InnerText;
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         description = "";
                     }
@@ -154,49 +198,44 @@ namespace MagyarTV
             string dateSeparatorXPath = "//*[contains(concat( \" \", @class, \" \" ), concat( \" \", \"w2g\", \" \" ))]";
             HtmlAgilityPack.HtmlNodeCollection dateSeparators = pageresult.DocumentNode.SelectNodes(dateSeparatorXPath); // Date separators, e.g. 2019. március 3. vasárnap. Typically there is 7 on a page.
             List<string> dateSeparatorList = new List<string>(); // This holds a list of date separator strings. 
-            List<ShowDate> showDateList = new List<ShowDate>();
+            
             string daterangeXPath = "//*[@id=\"ctl00_C_p\"]/div[@class=\"tvhead\"]/div[@class=\"tvheadtitle\"]/h2[@class=\"tvh2\"]";
-            HtmlAgilityPack.HtmlNode startdate = pageresult.DocumentNode.SelectSingleNode(daterangeXPath);  // This will be used to get the starting date
-            dateSeparatorList.Add(startdate.InnerText);
-            showDateList.Add(GetShowDate(startdate.InnerText));  // Need to fix up day of the week here since it is not provided in the HTML data. Will have to calculate
+            HtmlAgilityPack.HtmlNode startdate = pageresult.DocumentNode.SelectSingleNode(daterangeXPath);  // This will be used to get the first day/date of the current week schedule
+            dateSeparatorList.Add(startdate.InnerText); // start the dateseparatorList with the startdate
+
+            string[] parts1 = startdate.InnerText.Split();  // Fix up first entry with proper day of the week
+            string[] parts2 = dateSeparators[dateSeparators.Count-1].InnerText.Split();
+            List<ShowDate> showDateList = new List<ShowDate>();
+            dateSeparatorList[0] = string.Join(" ", String.Join(" ", parts1.Take(3).ToArray()), parts2[parts2.Count() - 1]);
 
             foreach (HtmlAgilityPack.HtmlNode dateSeparator in dateSeparators)
             {
                 dateSeparatorList.Add(dateSeparator.InnerText);
-                showDateList.Add(GetShowDate(dateSeparator.InnerText));
             }
-            string[] parts1 = dateSeparatorList[0].Split();
-            string[] parts2 = dateSeparatorList[7].Split();
-            dateSeparatorList[0] = string.Join(" ", String.Join(" ", parts1.Take(3).ToArray()), parts2[parts2.Count() - 1]);
+                  
             return dateSeparatorList;
         }
-
-        //private static string CalculateDayoftheWeek(string datestring)
-        //{
-        //    string[] parts = datestring.Trim().Split('.');
-
-
-        //}
 
         /// <summary>
         /// Parses a given string and returns a ShowDate equivalent object using values from the given string.
         /// </summary>
         /// <param name="datestring">A string with date value.s</param>
         /// <returns>A ShowDate object with values from the given string.</returns>
-        private static ShowDate GetShowDate(string datestring)
+        private string GetFormattedShowDate(string datestring)
         {
             // A typical string to split are:
             // "2019. március 3. vasárnap"
             // "2019. március 2. - 8."
             string[] parts = datestring.Trim().Split('.');
-            ShowDate showDate = new ShowDate()
-            {
-                Year = parts[0].Trim(),
-                Month = parts[1].Trim().Split(' ')[0],
-                Day = parts[1].Trim().Split()[1],
-                DayOfWeek = parts[2].Trim()
-            };
-            return showDate;
+
+            string Year = parts[0].Trim();
+            string m = parts[1].Trim().Split(' ')[0];
+            string Month = months[m.ToLower()];
+            string Day = parts[1].Trim().Split()[1];
+            string DayOfWeek = daysoftheweek[parts[2].Trim()];
+
+            string formattedDate = String.Format("{0}, {1} {2} {3}", DayOfWeek, Day, Month, Year);  // "Sat, 10 May 2008 14:32:17 GMT"
+            return formattedDate;
         }
         private void TVGuide_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -216,7 +255,7 @@ namespace MagyarTV
     public class ShowEntry
     {
         public string Title { get; set; }
-        public string StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
         public string Properties { get; set; }
         public string Description { get; set; }
     }
