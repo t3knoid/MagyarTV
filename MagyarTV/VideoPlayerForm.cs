@@ -11,9 +11,7 @@ using System.IO;
 using System.Threading;
 using System.Reflection;
 using System.Diagnostics;
-using CefSharp.WinForms;
 using System.Net;
-using CefSharp;
 
 namespace MagyarTV
 {
@@ -96,10 +94,6 @@ namespace MagyarTV
             channels = mediaKlikk.GetChannels();
             currentChannel = channels["M1"];
             currentChannelButton = btM1;
-            if (Cef.IsInitialized)
-            {
-                Cef.Shutdown();
-            }
         }
 
         private void buttonMouseHover(object sender, EventArgs e)
@@ -143,10 +137,10 @@ namespace MagyarTV
         }
         private void tVGuideToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string today = DateTime.Now.ToString("yyyyMMdd");
-            string urlstring = String.Format("http://tv.animare.hu/default.aspx?c={0}&t={1}", currentChannel.TVGuideEntry,today);
+            //string today = DateTime.Now.ToString("yyyyMMdd");
+            //string urlstring = String.Format("http://tv.animare.hu/default.aspx?c={0}&t={1}", currentChannel.TVGuideEntry,today);
 
-            LaunchTVGuide(urlstring);
+            LaunchTVGuide();
         }
 
         #endregion
@@ -297,15 +291,9 @@ namespace MagyarTV
             mediaPlayer.Play(uri);
         }
 
-        private void LaunchTVGuide(string url)
+        private void LaunchTVGuide()
         {
-            if (!Cef.IsInitialized)
-            {
-                CefSettings settings = new CefSettings();
-                Cef.Initialize(settings);
-            }
-
-            TVGuide tVGuide = new TVGuide() { Url = url };
+            TVGuide tVGuide = new TVGuide();
             tVGuide.Show();
 
         }

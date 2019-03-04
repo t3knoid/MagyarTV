@@ -14,6 +14,7 @@ def geturi(index):
         An example M3U8 file looks like the following:
         #EXTM3U
         #EXT-X-VERSION:3
+
         #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=468677,CODECS="avc1.42c00d,mp4a.40.2",RESOLUTION=320x180
         05.m3u8
         #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=826286,CODECS="avc1.42c01e,mp4a.40.2",RESOLUTION=480x270
