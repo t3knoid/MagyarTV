@@ -389,6 +389,7 @@ namespace MagyarTV
         private void bgwGetURI_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
+            string uri = e.Argument.ToString();
 
             if (worker.CancellationPending)
             {
@@ -398,17 +399,26 @@ namespace MagyarTV
 
             string error = String.Empty;
             MediaKlikk mediaKlikk = new MediaKlikk();
-            Uri url = new Uri(mediaKlikk.GetChannelURI(e.Argument.ToString())); // Gets the m3u8 URL.
-            if (worker.CancellationPending)
+            try
             {
-                Logger.Info("Cancelling work.");
-                return;
+                Uri url = new Uri(mediaKlikk.GetChannelURI(uri)); // Gets the m3u8 URL.
+
+
+                if (worker.CancellationPending)
+                {
+                    Logger.Info("Cancelling work.");
+                    return;
+                }
+                error = mediaKlikk.StandardError.ToString();
+                Logger.Info(string.Format("URI={0}", url));
+
+                e.Result = url;
             }
-            error = mediaKlikk.StandardError.ToString();
-            Logger.Info(string.Format("URI={0}", url));
-
-            e.Result = url;
-
+            catch (Exception ex)
+            {
+                Logger.Warning(String.Format("Unable to play stream, {0}. {1}", uri, ex.Message));
+                Logger.Error(ex);
+            }
         }
         private void bgwGetURI_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
