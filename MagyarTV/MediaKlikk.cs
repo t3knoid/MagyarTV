@@ -26,13 +26,13 @@ namespace MagyarTV
             Name = "M2",
             TVGuideEntry = "2",
         };
-        static private Channel M3 => new Channel()
-        {
-            IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv3live",
-            Info = "https://www.mediaklikk.hu/m3-elo/",
-            Name = "M3",
-            TVGuideEntry = "153",
-        };
+        //static private Channel M3 => new Channel()
+        //{
+        //    IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv3live",
+        //    Info = "https://www.mediaklikk.hu/m3-elo/",
+        //    Name = "M3",
+        //    TVGuideEntry = "153",
+        //};
         static private Channel M4 => new Channel()
         {
             IndexFeed = "https://player.mediaklikk.hu/playernew/player.php?video=mtv4live",
@@ -72,7 +72,7 @@ namespace MagyarTV
             Dictionary<string, Channel> channels = new Dictionary<string, Channel>();
             channels.Add(M1.Name, M1);
             channels.Add(M2.Name, M2);
-            channels.Add(M3.Name, M3);
+            //channels.Add(M3.Name, M3);
             channels.Add(M4.Name, M4);
             channels.Add(M5.Name, M5);
             channels.Add(Duna.Name, Duna);
@@ -85,7 +85,7 @@ namespace MagyarTV
             List<string> names = new List<string>();
             names.Add(M1.Name);
             names.Add(M2.Name);
-            names.Add(M3.Name);
+            //names.Add(M3.Name);
             names.Add(M4.Name);
             names.Add(M5.Name);
             names.Add(Duna.Name);

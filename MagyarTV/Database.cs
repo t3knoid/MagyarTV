@@ -64,6 +64,66 @@ namespace MagyarTV
 
         }
 
+        internal int AddShowSchedule(KeyValuePair<string, List<ShowEntry>> showSchedule)
+        {
+            int result = -1;
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
+                {
+                    conn.Open();
+                    using (SQLiteCommand cmd = new SQLiteCommand(conn))
+                    {
+                        cmd.CommandText = "INSERT INTO TVGuide(Channel,Title,Description,StartTime,Date,Time,Day,Duration,Properties) VALUES (@Channel,@Title,@Description,@StartTime,@Date,@Time,@Day,@Duration,@Properties)";
+                        cmd.Prepare();
+                        foreach (ShowEntry showentry in showSchedule.Value)
+                        {
+                            cmd.Parameters.AddWithValue("@Channel", showSchedule.Key);
+                            cmd.Parameters.AddWithValue("@Title", showentry.Title);
+                            cmd.Parameters.AddWithValue("@Description", showentry.Description);
+                            cmd.Parameters.AddWithValue("@StartTime", showentry.StartTime);
+                            cmd.Parameters.AddWithValue("@Date", showentry.Date);
+                            cmd.Parameters.AddWithValue("@Time", showentry.Time);
+                            cmd.Parameters.AddWithValue("@Day", showentry.Day);
+                            cmd.Parameters.AddWithValue("@Duration", "");
+                            cmd.Parameters.AddWithValue("@Properties", showentry.Properties);
+                            result = cmd.ExecuteNonQuery();
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in AddShowSchedule. {0}", ex.Message));
+            }
+
+            return result;
+        }
+
+        internal int EmptyTVGuideEntries(string channel)
+        {
+            int result = -1;
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
+                {
+                    conn.Open();
+                    using (SQLiteCommand cmd = new SQLiteCommand(conn))
+                    {
+                        cmd.CommandText = String.Format("DELETE FROM TVGuide where Channel = '{0}'",channel);
+                        cmd.Prepare();
+                        result = cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in EmptyTVGuideEntries. {0}", ex.Message));
+            }
+
+            return result;
+        }
 
         public ScheduleItem GetScheduleItem(int id)
         {
@@ -111,35 +171,36 @@ namespace MagyarTV
         public int AddScheduleItem(ScheduleItem schedule)
         {
             int result = -1;
-            using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
+            try
             {
-                conn.Open();
-                using (SQLiteCommand cmd = new SQLiteCommand(conn))
+                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
                 {
-                    cmd.CommandText = "INSERT INTO RecordingSchedules(Channel,StartTime,EndTime,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday,Repeat) VALUES (@Channel,@StartTime,@EndTime,@Monday,@Tuesday,@Wednesday,@Thursday,@Friday,@Saturday,@Sunday,@Repeat)";
-                    cmd.Prepare();
-                    cmd.Parameters.AddWithValue("@Channel", schedule.ChannelToRecord);
-                    cmd.Parameters.AddWithValue("@StartTime", schedule.StartTime.ToShortTimeString());
-                    cmd.Parameters.AddWithValue("@EndTime", schedule.EndTime.ToShortTimeString());
-                    cmd.Parameters.AddWithValue("@Monday", schedule.DaysToRecord["Monday"]);
-                    cmd.Parameters.AddWithValue("@Tuesday", schedule.DaysToRecord["Tuesday"]);
-                    cmd.Parameters.AddWithValue("@Wednesday", schedule.DaysToRecord["Wednesday"]);
-                    cmd.Parameters.AddWithValue("@Thursday", schedule.DaysToRecord["Thursday"]);
-                    cmd.Parameters.AddWithValue("@Friday", schedule.DaysToRecord["Friday"]);
-                    cmd.Parameters.AddWithValue("@Saturday", schedule.DaysToRecord["Saturday"]);
-                    cmd.Parameters.AddWithValue("@Sunday", schedule.DaysToRecord["Sunday"]);
-                    cmd.Parameters.AddWithValue("@Repeat", schedule.Repeat);
-                    try
+                    conn.Open();
+                    using (SQLiteCommand cmd = new SQLiteCommand(conn))
                     {
+                        cmd.CommandText = "INSERT INTO RecordingSchedules(Channel,StartTime,EndTime,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday,Repeat) VALUES (@Channel,@StartTime,@EndTime,@Monday,@Tuesday,@Wednesday,@Thursday,@Friday,@Saturday,@Sunday,@Repeat)";
+                        cmd.Prepare();
+                        cmd.Parameters.AddWithValue("@Channel", schedule.ChannelToRecord);
+                        cmd.Parameters.AddWithValue("@StartTime", schedule.StartTime.ToShortTimeString());
+                        cmd.Parameters.AddWithValue("@EndTime", schedule.EndTime.ToShortTimeString());
+                        cmd.Parameters.AddWithValue("@Monday", schedule.DaysToRecord["Monday"]);
+                        cmd.Parameters.AddWithValue("@Tuesday", schedule.DaysToRecord["Tuesday"]);
+                        cmd.Parameters.AddWithValue("@Wednesday", schedule.DaysToRecord["Wednesday"]);
+                        cmd.Parameters.AddWithValue("@Thursday", schedule.DaysToRecord["Thursday"]);
+                        cmd.Parameters.AddWithValue("@Friday", schedule.DaysToRecord["Friday"]);
+                        cmd.Parameters.AddWithValue("@Saturday", schedule.DaysToRecord["Saturday"]);
+                        cmd.Parameters.AddWithValue("@Sunday", schedule.DaysToRecord["Sunday"]);
+                        cmd.Parameters.AddWithValue("@Repeat", schedule.Repeat);
                         result = cmd.ExecuteNonQuery();
                     }
-                    catch (SQLiteException ex)
-                    {
-                        System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", ex.Message));
-                    }
+                    conn.Close();
                 }
-                conn.Close();
             }
+            catch (SQLiteException ex)
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", ex.Message));
+            }
+
             return result;
         }
         public List<ScheduleItem> GetScheduleItems()

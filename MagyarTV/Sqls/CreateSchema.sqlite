@@ -13,3 +13,14 @@
 	`Sunday`	INTEGER,
 	`Repeat`	INTEGER
 );
+CREATE TABLE `TVGuide` (
+	`Channel`	INTEGER,
+	`Title`	TEXT,
+	`Description`	TEXT,
+	`StartTime`	TEXT,
+	`Date`	TEXT,
+	`Time`	TEXT,
+	`Day`	TEXT,
+	`Duration`	INTEGER,
+	`Properties`	TEXT
+);

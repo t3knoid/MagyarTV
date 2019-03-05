@@ -32,9 +32,9 @@
             this.btOK = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btDelete = new System.Windows.Forms.Button();
-            this.btAdd = new System.Windows.Forms.Button();
             this.btView = new System.Windows.Forms.Button();
+            this.btAdd = new System.Windows.Forms.Button();
+            this.btDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -75,15 +75,15 @@
             this.flowLayoutPanel2.Size = new System.Drawing.Size(81, 103);
             this.flowLayoutPanel2.TabIndex = 5;
             // 
-            // btDelete
+            // btView
             // 
-            this.btDelete.Location = new System.Drawing.Point(3, 61);
-            this.btDelete.Name = "btDelete";
-            this.btDelete.Size = new System.Drawing.Size(75, 23);
-            this.btDelete.TabIndex = 0;
-            this.btDelete.Text = "&Delete";
-            this.btDelete.UseVisualStyleBackColor = true;
-            this.btDelete.Click += new System.EventHandler(this.btDelete_Click_1);
+            this.btView.Location = new System.Drawing.Point(3, 3);
+            this.btView.Name = "btView";
+            this.btView.Size = new System.Drawing.Size(75, 23);
+            this.btView.TabIndex = 2;
+            this.btView.Text = "&View";
+            this.btView.UseVisualStyleBackColor = true;
+            this.btView.Click += new System.EventHandler(this.btView_Click);
             // 
             // btAdd
             // 
@@ -95,15 +95,15 @@
             this.btAdd.UseVisualStyleBackColor = true;
             this.btAdd.Click += new System.EventHandler(this.btAdd_Click_1);
             // 
-            // btView
+            // btDelete
             // 
-            this.btView.Location = new System.Drawing.Point(3, 3);
-            this.btView.Name = "btView";
-            this.btView.Size = new System.Drawing.Size(75, 23);
-            this.btView.TabIndex = 2;
-            this.btView.Text = "&View";
-            this.btView.UseVisualStyleBackColor = true;
-            this.btView.Click += new System.EventHandler(this.btView_Click);
+            this.btDelete.Location = new System.Drawing.Point(3, 61);
+            this.btDelete.Name = "btDelete";
+            this.btDelete.Size = new System.Drawing.Size(75, 23);
+            this.btDelete.TabIndex = 0;
+            this.btDelete.Text = "&Delete";
+            this.btDelete.UseVisualStyleBackColor = true;
+            this.btDelete.Click += new System.EventHandler(this.btDelete_Click_1);
             // 
             // RecordingSchedulesForm
             // 
