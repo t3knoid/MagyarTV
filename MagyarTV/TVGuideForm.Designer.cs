@@ -1,6 +1,6 @@
 ﻿namespace MagyarTV
 {
-    partial class TVGuide
+    partial class TVGuideForm
     {
         /// <summary>
         /// Required designer variable.
@@ -38,8 +38,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "TVGuide";
             this.Text = "TVGuide";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TVGuide_FormClosing);
-            this.Load += new System.EventHandler(this.TVGuide_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TVGuideForm_FormClosing);
             this.ResumeLayout(false);
 
         }

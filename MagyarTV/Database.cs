@@ -101,6 +101,77 @@ namespace MagyarTV
             return result;
         }
 
+        internal int AddShowSchedule(List<ShowEntry> showSchedule)
+        {
+            int result = -1;
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
+                {
+                    conn.Open();
+                    using (SQLiteCommand cmd = new SQLiteCommand(conn))
+                    {
+                        cmd.CommandText = "INSERT INTO TVGuide(Channel,Title,Description,StartTime,Date,Time,Day,Duration,Properties) VALUES (@Channel,@Title,@Description,@StartTime,@Date,@Time,@Day,@Duration,@Properties)";
+                        cmd.Prepare();
+                        foreach (ShowEntry showentry in showSchedule)
+                        {
+                            cmd.Parameters.AddWithValue("@Channel", showentry.Channel.Name);
+                            cmd.Parameters.AddWithValue("@Title", showentry.Title);
+                            cmd.Parameters.AddWithValue("@Description", showentry.Description);
+                            cmd.Parameters.AddWithValue("@StartTime", showentry.StartTime);
+                            cmd.Parameters.AddWithValue("@Date", showentry.Date);
+                            cmd.Parameters.AddWithValue("@Time", showentry.Time);
+                            cmd.Parameters.AddWithValue("@Day", showentry.Day);
+                            cmd.Parameters.AddWithValue("@Duration", "");
+                            cmd.Parameters.AddWithValue("@Properties", showentry.Properties);
+                            result = cmd.ExecuteNonQuery();
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in AddShowSchedule. {0}", ex.Message));
+            }
+
+            return result;
+        }
+
+        internal int AddShowSchedule(ShowEntry showentry)
+        {
+            int result = -1;
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
+                {
+                    conn.Open();
+                    using (SQLiteCommand cmd = new SQLiteCommand(conn))
+                    {
+                        cmd.CommandText = "INSERT INTO TVGuide(Channel,Title,Description,StartTime,Date,Time,Day,Duration,Properties) VALUES (@Channel,@Title,@Description,@StartTime,@Date,@Time,@Day,@Duration,@Properties)";
+                        cmd.Prepare();
+                        cmd.Parameters.AddWithValue("@Channel", showentry.Channel);
+                        cmd.Parameters.AddWithValue("@Title", showentry.Title);
+                        cmd.Parameters.AddWithValue("@Description", showentry.Description);
+                        cmd.Parameters.AddWithValue("@StartTime", showentry.StartTime);
+                        cmd.Parameters.AddWithValue("@Date", showentry.Date);
+                        cmd.Parameters.AddWithValue("@Time", showentry.Time);
+                        cmd.Parameters.AddWithValue("@Day", showentry.Day);
+                        cmd.Parameters.AddWithValue("@Duration", "");
+                        cmd.Parameters.AddWithValue("@Properties", showentry.Properties);
+                        result = cmd.ExecuteNonQuery();
+                    }
+                    conn.Close();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in AddShowSchedule. {0}", ex.Message));
+            }
+
+            return result;
+        }
+
         internal int EmptyTVGuideEntries(string channel)
         {
             int result = -1;

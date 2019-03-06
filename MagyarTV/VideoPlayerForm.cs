@@ -94,6 +94,8 @@ namespace MagyarTV
             channels = mediaKlikk.GetChannels();
             currentChannel = channels["M1"];
             currentChannelButton = btM1;
+            tVGuideToolStripMenuItem.Enabled = false;
+            bgwTVGuide.RunWorkerAsync();
         }
 
         private void buttonMouseHover(object sender, EventArgs e)
@@ -293,8 +295,8 @@ namespace MagyarTV
 
         private void LaunchTVGuide()
         {
-            TVGuide tVGuide = new TVGuide();
-            tVGuide.Show();
+            TVGuideForm tVGuideform = new TVGuideForm();
+            tVGuideform.Show();
 
         }
         #endregion
@@ -482,6 +484,22 @@ namespace MagyarTV
                     response.Close();
             }
 
+        }
+        #endregion
+
+        #region TVGuide Background worker
+        private void bgwTVGuide_DoWork(object sender, DoWorkEventArgs e)
+        {
+            MediaKlikk mediaKlikk = new MediaKlikk();
+            Dictionary<string, Channel> channels = mediaKlikk.GetChannels();
+
+            TVGuide tVGuide = new TVGuide();
+            tVGuide.Initialize(channels);
+        }
+
+        private void bgwTVGuide_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            tVGuideToolStripMenuItem.Enabled = true;
         }
         #endregion
     }

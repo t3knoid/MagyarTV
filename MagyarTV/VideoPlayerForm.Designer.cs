@@ -61,19 +61,14 @@
             this.btM1 = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.bgwGetURI = new System.ComponentModel.BackgroundWorker();
-            this.streamsBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            this.streamsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.channelBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.streamsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.bgwRecording = new System.ComponentModel.BackgroundWorker();
+            this.bgwTVGuide = new System.ComponentModel.BackgroundWorker();
+            this.channelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.streamsBindingSource2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.streamsBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.channelBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.streamsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -179,7 +174,7 @@
             this.mediaPlayer.BackColor = System.Drawing.Color.Black;
             this.mediaPlayer.Location = new System.Drawing.Point(9, 27);
             this.mediaPlayer.Name = "mediaPlayer";
-            this.mediaPlayer.Size = new System.Drawing.Size(683, 504);
+            this.mediaPlayer.Size = new System.Drawing.Size(683, 483);
             this.mediaPlayer.Spu = -1;
             this.mediaPlayer.TabIndex = 6;
             this.mediaPlayer.VlcLibDirectory = null;
@@ -192,7 +187,7 @@
             this.flowLayoutPanel1.Controls.Add(this.btStop);
             this.flowLayoutPanel1.Controls.Add(this.btPlay);
             this.flowLayoutPanel1.Controls.Add(this.btRecord);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(253, 537);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(271, 525);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(240, 75);
             this.flowLayoutPanel1.TabIndex = 7;
@@ -408,27 +403,22 @@
             this.bgwGetURI.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetURI_DoWork);
             this.bgwGetURI.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetURI_RunWorkerCompleted);
             // 
-            // streamsBindingSource2
-            // 
-            this.streamsBindingSource2.DataSource = typeof(MagyarTV.Stream);
-            // 
-            // streamsBindingSource1
-            // 
-            this.streamsBindingSource1.DataSource = typeof(MagyarTV.Stream);
-            // 
-            // channelBindingSource
-            // 
-            this.channelBindingSource.DataSource = typeof(MagyarTV.Channel);
-            // 
-            // streamsBindingSource
-            // 
-            this.streamsBindingSource.DataSource = typeof(MagyarTV.Stream);
-            // 
             // bgwRecording
             // 
             this.bgwRecording.WorkerSupportsCancellation = true;
             this.bgwRecording.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwRecording_DoWork);
             this.bgwRecording.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwRecording_RunWorkerCompleted);
+            // 
+            // bgwTVGuide
+            // 
+            this.bgwTVGuide.WorkerReportsProgress = true;
+            this.bgwTVGuide.WorkerSupportsCancellation = true;
+            this.bgwTVGuide.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwTVGuide_DoWork);
+            this.bgwTVGuide.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwTVGuide_RunWorkerCompleted);
+            // 
+            // channelBindingSource
+            // 
+            this.channelBindingSource.DataSource = typeof(MagyarTV.Channel);
             // 
             // VideoPlayerForm
             // 
@@ -453,10 +443,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.streamsBindingSource2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.streamsBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.channelBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.streamsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -493,12 +480,10 @@
         private System.Windows.Forms.ImageList imageDuna;
         private System.Windows.Forms.ImageList imageListDunaWorld;
         private System.Windows.Forms.BindingSource channelBindingSource;
-        private System.Windows.Forms.BindingSource streamsBindingSource;
-        private System.Windows.Forms.BindingSource streamsBindingSource2;
-        private System.Windows.Forms.BindingSource streamsBindingSource1;
         private System.Windows.Forms.ToolStripMenuItem resolutionToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker bgwGetURI;
         private System.ComponentModel.BackgroundWorker bgwRecording;
+        private System.ComponentModel.BackgroundWorker bgwTVGuide;
     }
 }
 

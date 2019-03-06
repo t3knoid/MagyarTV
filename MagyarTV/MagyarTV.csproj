@@ -130,11 +130,12 @@
       <DependentUpon>AddRecordingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream.cs" />
-    <Compile Include="TVGuide.cs">
+    <Compile Include="TVGuide.cs" />
+    <Compile Include="TVGuideForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TVGuide.Designer.cs">
-      <DependentUpon>TVGuide.cs</DependentUpon>
+    <Compile Include="TVGuideForm.Designer.cs">
+      <DependentUpon>TVGuideForm.cs</DependentUpon>
     </Compile>
     <Compile Include="VideoMetadata.cs" />
     <Compile Include="VideoPlayerForm.cs">
@@ -152,8 +153,8 @@
     <EmbeddedResource Include="AddRecordingForm.resx">
       <DependentUpon>AddRecordingForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TVGuide.resx">
-      <DependentUpon>TVGuide.cs</DependentUpon>
+    <EmbeddedResource Include="TVGuideForm.resx">
+      <DependentUpon>TVGuideForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VideoPlayerForm.resx">
       <DependentUpon>VideoPlayerForm.cs</DependentUpon>

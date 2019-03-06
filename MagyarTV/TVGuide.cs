@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using HtmlAgilityPack;
-using ScrapySharp.Extensions;
-using ScrapySharp.Network;
 
 namespace MagyarTV
 {
-    public partial class TVGuide : Form
+    public class TVGuide
     {
         private Dictionary<string, string> months = new Dictionary<string, string>
         {
@@ -44,36 +38,33 @@ namespace MagyarTV
             { "vasárnap", "Sun" },
         };
 
-        string urlFormat = "http://tv.animare.hu/default.aspx?c={0}&t={1}";      
+        string urlFormat = "http://tv.animare.hu/default.aspx?c={0}&t={1}";
 
         public TVGuide()
         {
-            InitializeComponent();
+            
         }
 
-        private void TVGuide_Load(object sender, EventArgs e)
+        public void Initialize(Dictionary<string, Channel> channels)
         {
-            MediaKlikk mediaKlikk = new MediaKlikk();
-            Dictionary<string, Channel> channels = mediaKlikk.GetChannels();
-            Dictionary<string, List<ShowEntry>> showSchedules = new Dictionary<string, List<ShowEntry>>();
+            Database database = new Database();
+            List<ShowEntry> allschedule = new List<ShowEntry>();
+
             foreach (KeyValuePair<string, Channel> channel in channels)
             {
+                database.EmptyTVGuideEntries(channel.Key);
                 List<ShowEntry> schedule = GetShowScheduleList(channels[channel.Key]);
-                showSchedules.Add(channel.Key, schedule);
+                allschedule.AddRange(schedule);
             }
 
-            Database database = new Database();
-            foreach (KeyValuePair<string, List<ShowEntry>> showSchedule in showSchedules)
-            {
-                database.EmptyTVGuideEntries(showSchedule.Key);
-                database.AddShowSchedule(showSchedule);
-            }
+            database.AddShowSchedule(allschedule);
 
-            //List<ShowEntry> schedule = GetShowScheduleList(channels["M2"]);                       // Use this for single channel test
-            //database.EmptyTVGuideEntries(showSchedules["M2"].ToString());                          // Use this for single channel test
-            //database.AddShowSchedule(new KeyValuePair<string, List<ShowEntry>>("M2", schedule));   // Use this for single channel test
         }
-
+        /// <summary>
+        /// Gets a list of TV Guide schedule for a given channel
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <returns></returns>
         private List<ShowEntry> GetShowScheduleList(Channel channel)
         {
             string today = DateTime.Now.ToString("yyyyMMdd");
@@ -90,8 +81,8 @@ namespace MagyarTV
                 sw.Close();
             }
 
-            List<string> dateSeparatorList = GetdateSeparatorList(htmlDocument);           
-            List<ShowEntry> showScheduleList = GetShowList(channel, htmlDocument, dateSeparatorList); 
+            List<string> dateSeparatorList = GetdateSeparatorList(htmlDocument);
+            List<ShowEntry> showScheduleList = GetShowList(channel, htmlDocument, dateSeparatorList);
 
             return showScheduleList;
         }
@@ -123,13 +114,6 @@ namespace MagyarTV
             return htmlDocument;
         }
 
-        /// <summary>
-        /// Creates a dictionary of shows for every given day.
-        /// </summary>
-        /// <param name="pageresult"></param>
-        /// <param name="dateSeparatorList"></param>
-        /// <returns></returns>
-        //private Dictionary<string, List<ShowEntry>> GetShowList(HtmlAgilityPack.HtmlDocument pageresult, List<string> dateSeparatorList)
         private List<ShowEntry> GetShowList(Channel channel, HtmlAgilityPack.HtmlDocument pageresult, List<string> dateSeparatorList)
         {
             //HtmlAgilityPack.HtmlNodeCollection shows = pageresult.DocumentNode.SelectNodes("//*[starts-with(@id, \"tv\")]/div[contains(@class,\"w2\")]"); // Each node is a show entry.
@@ -178,36 +162,14 @@ namespace MagyarTV
                         string[] summaryTime = pr.DocumentNode.SelectSingleNode(summaryTimeXPath).InnerText.Split();
                         string datetime = formattedDate + " " + summaryTime[0].Trim() + ":00";
                         CultureInfo culture = new CultureInfo("hu-HU");
-                        timeStart = Convert.ToDateTime(datetime,culture);
+                        timeStart = Convert.ToDateTime(datetime, culture);
                         timeStart = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(timeStart, TimeZoneInfo.FindSystemTimeZoneById("Central Europe Standard Time").Id, TimeZoneInfo.Local.Id); // Convert to localtime from CET
-                        day = timeStart. DayOfWeek.ToString();
+                        day = timeStart.DayOfWeek.ToString();
                         date = timeStart.ToString("d");
                         time = timeStart.ToString("HH:mm");
                         showTitle = String.Join(" ", summaryTime.Skip(1).ToArray());  // Remove first item after split
-                    }
-                    catch (Exception ex)
-                    {
-                        timeStart = DateTime.MinValue;
-                        showTitle = "";
-                    }
-                    try
-                    {
                         description = pr.DocumentNode.SelectSingleNode(descriptionXPath).InnerText;
-                    }
-                    catch (Exception ex)
-                    {
-                        description = "";
-                    }
-                    try
-                    {
                         showProperty = pr.DocumentNode.SelectSingleNode(showPropertyXPath).InnerText;
-                    }
-                    catch (Exception ex)
-                    {
-                        showProperty = "";
-                    }
-                    if (timeStart != DateTime.MinValue)
-                    {
                         ShowEntry showEntry = new ShowEntry()
                         {
                             Channel = channel,
@@ -221,10 +183,12 @@ namespace MagyarTV
                         };
                         showsofthedayList.Add(showEntry);
                     }
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
                 }
             }
-
-            //return showsbyDate;
             return showsofthedayList;
         }
 
@@ -233,13 +197,13 @@ namespace MagyarTV
             string dateSeparatorXPath = "//*[contains(concat( \" \", @class, \" \" ), concat( \" \", \"w2g\", \" \" ))]";
             HtmlAgilityPack.HtmlNodeCollection dateSeparators = pageresult.DocumentNode.SelectNodes(dateSeparatorXPath); // Date separators, e.g. 2019. március 3. vasárnap. Typically there is 7 on a page.
             List<string> dateSeparatorList = new List<string>(); // This holds a list of date separator strings. 
-            
+
             string daterangeXPath = "//*[@id=\"ctl00_C_p\"]/div[@class=\"tvhead\"]/div[@class=\"tvheadtitle\"]/h2[@class=\"tvh2\"]";
             HtmlAgilityPack.HtmlNode startdate = pageresult.DocumentNode.SelectSingleNode(daterangeXPath);  // This will be used to get the first day/date of the current week schedule
             dateSeparatorList.Add(startdate.InnerText); // start the dateseparatorList with the startdate
 
             string[] parts1 = startdate.InnerText.Split();  // Fix up first entry with proper day of the week
-            string[] parts2 = dateSeparators[dateSeparators.Count-1].InnerText.Split();
+            string[] parts2 = dateSeparators[dateSeparators.Count - 1].InnerText.Split();
             List<ShowDate> showDateList = new List<ShowDate>();
             dateSeparatorList[0] = string.Join(" ", String.Join(" ", parts1.Take(3).ToArray()), parts2[parts2.Count() - 1]);
 
@@ -247,7 +211,7 @@ namespace MagyarTV
             {
                 dateSeparatorList.Add(dateSeparator.InnerText);
             }
-                  
+
             return dateSeparatorList;
         }
 
@@ -272,11 +236,6 @@ namespace MagyarTV
             string formattedDate = String.Format("{0}, {1} {2} {3}", DayOfWeek, Day, Month, Year);  // "Sat, 10 May 2008 14:32:17 GMT"
             return formattedDate;
         }
-        private void TVGuide_FormClosing(object sender, FormClosingEventArgs e)
-        {
-
-        }
-
     }
 
     public class ShowDate
