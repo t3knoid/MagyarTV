@@ -23,6 +23,12 @@ namespace MagyarTV
         {
 
         }
+
+        private void TVGuideForm_Load(object sender, EventArgs e)
+        {
+            Database database = new Database();
+
+        }
     }
 
 }

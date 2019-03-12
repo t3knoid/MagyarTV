@@ -19,7 +19,6 @@ namespace MagyarTV
         {
             this.DatabaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "MagyarTV");
             this.DatabasePath = Path.Combine(DatabaseDir, "Magyartv.sqlite");
-            this.ConnnectionString = String.Format("Data Source={0};Version=3; FailIfMissing=True; Foreign Keys=True;", DatabasePath);
             CreateSchema();
         }
 
@@ -108,10 +107,23 @@ namespace MagyarTV
             {
                 using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
                 {
+                    string sql = "INSERT INTO TVGuide(Channel,Title,Description,StartTime,Date,Time,Day,Duration,Properties) VALUES (@Channel,@Title,@Description,@StartTime,@Date,@Time,@Day,@Duration,@Properties)";
                     conn.Open();
+                    SQLiteResult sqliteResult = SQLite.Exec(DatabasePath, sql);
+                    if (!sqliteResult.success)
+                    {
+                        System.Windows.Forms.MessageBox.Show(String.Format("Error in AddShowSchedule. {0}", sqliteResult.message));
+                    }
+                    else
+                    {
+                        SQLite.CloseConnection(sqliteResult);
+                    }
+
+
+
                     using (SQLiteCommand cmd = new SQLiteCommand(conn))
                     {
-                        cmd.CommandText = "INSERT INTO TVGuide(Channel,Title,Description,StartTime,Date,Time,Day,Duration,Properties) VALUES (@Channel,@Title,@Description,@StartTime,@Date,@Time,@Day,@Duration,@Properties)";
+                        
                         cmd.Prepare();
                         foreach (ShowEntry showentry in showSchedule)
                         {
@@ -138,183 +150,111 @@ namespace MagyarTV
             return result;
         }
 
-        internal int AddShowSchedule(ShowEntry showentry)
+        internal void AddShowSchedule(ShowEntry showentry)
         {
-            int result = -1;
-            try
+            string sql = string.Format("INSERT INTO TVGuide(Channel,Title,Description,StartTime,Date,Time,Day,Duration,Properties) VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8})",
+                showentry.Channel, showentry.Title, showentry.Description, showentry.StartTime, showentry.Date, showentry.Time, showentry.Day, "", showentry.Properties);
+            SQLiteResult sqliteResult = SQLite.Exec(DatabasePath, sql);
+            if (!sqliteResult.success)
             {
-                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
-                {
-                    conn.Open();
-                    using (SQLiteCommand cmd = new SQLiteCommand(conn))
-                    {
-                        cmd.CommandText = "INSERT INTO TVGuide(Channel,Title,Description,StartTime,Date,Time,Day,Duration,Properties) VALUES (@Channel,@Title,@Description,@StartTime,@Date,@Time,@Day,@Duration,@Properties)";
-                        cmd.Prepare();
-                        cmd.Parameters.AddWithValue("@Channel", showentry.Channel);
-                        cmd.Parameters.AddWithValue("@Title", showentry.Title);
-                        cmd.Parameters.AddWithValue("@Description", showentry.Description);
-                        cmd.Parameters.AddWithValue("@StartTime", showentry.StartTime);
-                        cmd.Parameters.AddWithValue("@Date", showentry.Date);
-                        cmd.Parameters.AddWithValue("@Time", showentry.Time);
-                        cmd.Parameters.AddWithValue("@Day", showentry.Day);
-                        cmd.Parameters.AddWithValue("@Duration", "");
-                        cmd.Parameters.AddWithValue("@Properties", showentry.Properties);
-                        result = cmd.ExecuteNonQuery();
-                    }
-                    conn.Close();
-                }
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in AddShowSchedule. {0}", sqliteResult.message));
             }
-            catch (SQLiteException ex)
+            else
             {
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in AddShowSchedule. {0}", ex.Message));
+                SQLite.CloseConnection(sqliteResult);
             }
-
-            return result;
         }
 
-        internal int EmptyTVGuideEntries(string channel)
+        internal void EmptyTVGuideEntries(string channel)
         {
-            int result = -1;
-            try
+            string sql = String.Format("DELETE FROM TVGuide where Channel = '{0}'", channel);
+            SQLiteResult sqliteresult = SQLite.Exec(DatabasePath, sql);
+            if (!sqliteresult.success)
             {
-                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
-                {
-                    conn.Open();
-                    using (SQLiteCommand cmd = new SQLiteCommand(conn))
-                    {
-                        cmd.CommandText = String.Format("DELETE FROM TVGuide where Channel = '{0}'",channel);
-                        cmd.Prepare();
-                        result = cmd.ExecuteNonQuery();
-                    }
-                }
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in EmptyTVGuideEntries. {0}", sqliteresult.message));
             }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in EmptyTVGuideEntries. {0}", ex.Message));
-            }
-
-            return result;
         }
 
         public ScheduleItem GetScheduleItem(int id)
         {
             ScheduleItem scheduleItem = new ScheduleItem();
-            try
+            Dictionary<string, bool> daysToRecord = new Dictionary<string, bool>();
+            string sql = "SELECT * FROM RecordingSchedules WHERE ID = " + id;
+            SQLiteResult sqliteResult = SQLite.Select(DatabasePath, sql);
+            if (sqliteResult.success)
             {
-                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
+                while (sqliteResult.reader.Read())
                 {
-                    conn.Open();
-                    string sql = "SELECT * FROM RecordingSchedules WHERE ID = " + id;
-                    using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
-                    {
-                        using (SQLiteDataReader reader = cmd.ExecuteReader())
-                        {
-                            Dictionary<string, bool> daysToRecord = new Dictionary<string, bool>();
-                            while (reader.Read())
-                            {
-                                scheduleItem.ID = Convert.ToInt32(reader["ID"].ToString());
-                                scheduleItem.ChannelToRecord = reader["Channel"].ToString();
-                                scheduleItem.StartTime = DateTime.Parse(reader["StartTime"].ToString());
-                                scheduleItem.EndTime = DateTime.Parse(reader["EndTime"].ToString());
-                                daysToRecord["Monday"] = reader["Monday"].ToString() == "0" ? false : true;
-                                daysToRecord["Tuesday"] = reader["Tuesday"].ToString() == "0" ? false : true;
-                                daysToRecord["Wednesday"] = reader["Wednesday"].ToString() == "0" ? false : true;
-                                daysToRecord["Thursday"] = reader["Thursday"].ToString() == "0" ? false : true;
-                                daysToRecord["Friday"] = reader["Friday"].ToString() == "0" ? false : true;
-                                daysToRecord["Saturday"] = reader["Saturday"].ToString() == "0" ? false : true;
-                                daysToRecord["Sunday"] = reader["Sunday"].ToString() == "0" ? false : true;
-                                scheduleItem.DaysToRecord = daysToRecord;
-                                scheduleItem.Repeat = reader["Repeat"].ToString() == "0" ? false : true;
-                            }
-                        }
-                    }
-                    conn.Close();
+                    scheduleItem.ID = Convert.ToInt32(sqliteResult.reader["ID"].ToString());
+                    scheduleItem.ChannelToRecord = sqliteResult.reader["Channel"].ToString();
+                    scheduleItem.StartTime = DateTime.Parse(sqliteResult.reader["StartTime"].ToString());
+                    scheduleItem.EndTime = DateTime.Parse(sqliteResult.reader["EndTime"].ToString());
+                    daysToRecord["Monday"] = sqliteResult.reader["Monday"].ToString() == "0" ? false : true;
+                    daysToRecord["Tuesday"] = sqliteResult.reader["Tuesday"].ToString() == "0" ? false : true;
+                    daysToRecord["Wednesday"] = sqliteResult.reader["Wednesday"].ToString() == "0" ? false : true;
+                    daysToRecord["Thursday"] = sqliteResult.reader["Thursday"].ToString() == "0" ? false : true;
+                    daysToRecord["Friday"] = sqliteResult.reader["Friday"].ToString() == "0" ? false : true;
+                    daysToRecord["Saturday"] = sqliteResult.reader["Saturday"].ToString() == "0" ? false : true;
+                    daysToRecord["Sunday"] = sqliteResult.reader["Sunday"].ToString() == "0" ? false : true;
+                    scheduleItem.DaysToRecord = daysToRecord;
+                    scheduleItem.Repeat = sqliteResult.reader["Repeat"].ToString() == "0" ? false : true;
                 }
+                SQLite.CloseConnection(sqliteResult);
             }
-            catch (SQLiteException ex)
-            {
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", ex.Message));
+            else
+            { 
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", sqliteResult.message));
             }
 
             return scheduleItem;
         }
 
-        public int AddScheduleItem(ScheduleItem schedule)
+        public void AddScheduleItem(ScheduleItem schedule)
         {
-            int result = -1;
-            try
-            {
-                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
-                {
-                    conn.Open();
-                    using (SQLiteCommand cmd = new SQLiteCommand(conn))
-                    {
-                        cmd.CommandText = "INSERT INTO RecordingSchedules(Channel,StartTime,EndTime,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday,Repeat) VALUES (@Channel,@StartTime,@EndTime,@Monday,@Tuesday,@Wednesday,@Thursday,@Friday,@Saturday,@Sunday,@Repeat)";
-                        cmd.Prepare();
-                        cmd.Parameters.AddWithValue("@Channel", schedule.ChannelToRecord);
-                        cmd.Parameters.AddWithValue("@StartTime", schedule.StartTime.ToShortTimeString());
-                        cmd.Parameters.AddWithValue("@EndTime", schedule.EndTime.ToShortTimeString());
-                        cmd.Parameters.AddWithValue("@Monday", schedule.DaysToRecord["Monday"]);
-                        cmd.Parameters.AddWithValue("@Tuesday", schedule.DaysToRecord["Tuesday"]);
-                        cmd.Parameters.AddWithValue("@Wednesday", schedule.DaysToRecord["Wednesday"]);
-                        cmd.Parameters.AddWithValue("@Thursday", schedule.DaysToRecord["Thursday"]);
-                        cmd.Parameters.AddWithValue("@Friday", schedule.DaysToRecord["Friday"]);
-                        cmd.Parameters.AddWithValue("@Saturday", schedule.DaysToRecord["Saturday"]);
-                        cmd.Parameters.AddWithValue("@Sunday", schedule.DaysToRecord["Sunday"]);
-                        cmd.Parameters.AddWithValue("@Repeat", schedule.Repeat);
-                        result = cmd.ExecuteNonQuery();
-                    }
-                    conn.Close();
-                }
+            var days = schedule.DaysToRecord;
+            var channel = schedule.ChannelToRecord;
+            var starttime = schedule.StartTime.ToShortTimeString();
+            var endtime = schedule.EndTime.ToShortTimeString();
+            var repeat = schedule.Repeat;
+            string sql = String.Format("INSERT INTO RecordingSchedules(Channel,StartTime,EndTime,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday,Repeat) VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11)",
+                channel, starttime, endtime, days["Monday"], days["Tuesday"], days["Wednesday"], days["Thursday"], days["Friday"], days["Saturday"], days["Sunday"], repeat);
+            SQLiteResult sqliteResult = SQLite.Exec(DatabasePath, sql);
+            if (!sqliteResult.success)
+            { 
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", sqliteResult.message));
             }
-            catch (SQLiteException ex)
-            {
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", ex.Message));
-            }
-
-            return result;
         }
         public List<ScheduleItem> GetScheduleItems()
         {
             List<ScheduleItem> scheduleItems = new List<ScheduleItem>();
-            try
+            string sql = "SELECT * FROM RecordingSchedules";
+            SQLiteResult sqliteResult = SQLite.Select(DatabasePath, sql);
+            if (sqliteResult.success)
             {
-                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
+                while (sqliteResult.reader.Read())
                 {
-                    conn.Open();
-                    string sql = "SELECT * FROM RecordingSchedules";
-                    using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
-                    {
-                        using (SQLiteDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Dictionary<string, bool> daysToRecord = new Dictionary<string, bool>();
-                                ScheduleItem scheduleItem = new ScheduleItem();
-                                scheduleItem.ID = Convert.ToInt32(reader["ID"].ToString());
-                                scheduleItem.ChannelToRecord = reader["Channel"].ToString();
-                                scheduleItem.StartTime = DateTime.Parse(reader["StartTime"].ToString(),new System.Globalization.CultureInfo("en-US"));
-                                scheduleItem.EndTime = DateTime.Parse(reader["EndTime"].ToString(), new System.Globalization.CultureInfo("en-US"));
-                                daysToRecord["Monday"] = reader["Monday"].ToString() == "0" ? false : true;
-                                daysToRecord["Tuesday"] = reader["Tuesday"].ToString() == "0" ? false : true;
-                                daysToRecord["Wednesday"] = reader["Wednesday"].ToString() == "0" ? false : true;
-                                daysToRecord["Thursday"] = reader["Thursday"].ToString() == "0" ? false : true;
-                                daysToRecord["Friday"] = reader["Friday"].ToString() == "0" ? false : true;
-                                daysToRecord["Saturday"] = reader["Saturday"].ToString() == "0" ? false : true;
-                                daysToRecord["Sunday"] = reader["Sunday"].ToString() == "0" ? false : true;
-                                scheduleItem.DaysToRecord = daysToRecord;
-                                scheduleItem.Repeat = reader["Repeat"].ToString() == "0" ? false : true;
-                                scheduleItems.Add(scheduleItem);
-                            }
-                            
-                        }
-                    }
-                    conn.Close();
+                    Dictionary<string, bool> days = new Dictionary<string, bool>();
+                    ScheduleItem scheduleItem = new ScheduleItem();
+                    scheduleItem.ID = Convert.ToInt32(sqliteResult.reader["ID"].ToString());
+                    scheduleItem.ChannelToRecord = sqliteResult.reader["Channel"].ToString();
+                    scheduleItem.StartTime = DateTime.Parse(sqliteResult.reader["StartTime"].ToString(), new System.Globalization.CultureInfo("en-US"));
+                    scheduleItem.EndTime = DateTime.Parse(sqliteResult.reader["EndTime"].ToString(), new System.Globalization.CultureInfo("en-US"));
+                    days["Monday"] = sqliteResult.reader["Monday"].ToString() == "0" ? false : true;
+                    days["Tuesday"] = sqliteResult.reader["Tuesday"].ToString() == "0" ? false : true;
+                    days["Wednesday"] = sqliteResult.reader["Wednesday"].ToString() == "0" ? false : true;
+                    days["Thursday"] = sqliteResult.reader["Thursday"].ToString() == "0" ? false : true;
+                    days["Friday"] = sqliteResult.reader["Friday"].ToString() == "0" ? false : true;
+                    days["Saturday"] = sqliteResult.reader["Saturday"].ToString() == "0" ? false : true;
+                    days["Sunday"] = sqliteResult.reader["Sunday"].ToString() == "0" ? false : true;
+                    scheduleItem.DaysToRecord = days;
+                    scheduleItem.Repeat = sqliteResult.reader["Repeat"].ToString() == "0" ? false : true;
+                    scheduleItems.Add(scheduleItem);
                 }
+                SQLite.CloseConnection(sqliteResult);
             }
-            catch (SQLiteException ex)
+            else 
             {
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", ex.Message));
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", sqliteResult.message));
             }
 
             return scheduleItems;
@@ -322,23 +262,22 @@ namespace MagyarTV
 
         public void DeleteItem(int id)
         {
-            try
-            {
-                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
-                {
-                    conn.Open();
-                    string sql = "Delete FROM RecordingSchedules WHERE ID = " + id;
-                    SQLiteCommand cmd = new SQLiteCommand(sql, conn);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                }
+            string sql = "Delete FROM RecordingSchedules WHERE ID = " + id;
+            SQLiteResult sqliteResult = SQLite.Exec(DatabasePath, sql);
+            if (!sqliteResult.success)
+            { 
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", sqliteResult.message));
             }
-            catch (SQLiteException ex)
+            else
             {
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", ex.Message));
+                SQLite.CloseConnection(sqliteResult);
             }
         }
 
+        public void InitializeTVGuideDatatable()
+        {
+
+        }
 
     }
 
