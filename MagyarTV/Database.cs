@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace MagyarTV
 {
@@ -36,7 +37,7 @@ namespace MagyarTV
                 }
                 catch (Exception ex)
                 {
-                    // Do something
+                    System.Windows.Forms.MessageBox.Show(String.Format("Error creating database directory. {0}",ex.Message));
                 }
             }
             if (!File.Exists(this.DatabasePath))
@@ -45,109 +46,36 @@ namespace MagyarTV
                 {
                     // Create database file
                     System.Data.SQLite.SQLiteConnection.CreateFile(this.DatabasePath);
-                    using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
-                    {
-                        conn.Open();
-
-                        SQLiteCommand cmd = new SQLiteCommand(ConnnectionString, conn);
-                        cmd.CommandText = File.ReadAllText(@sql);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                    }
                 }
                 catch (Exception ex)
                 {
-                    // Do something
+                    MessageBox.Show(string.Format("Failed to create database. {0}", ex.Message));
                 }
             }
-
+            SQLiteResult sqliteresult = SQLite.Exec(DatabasePath, sql);
+            if (!sqliteresult.success)
+            {
+               System.Windows.Forms.MessageBox.Show(String.Format("Error in creating schema. {0}", sqliteresult.message));
+            }
         }
 
-        internal int AddShowSchedule(KeyValuePair<string, List<ShowEntry>> showSchedule)
+
+        internal void AddShowSchedule(List<ShowEntry> showSchedule)
         {
-            int result = -1;
-            try
+            string sqlpre = "INSERT INTO TVGuide(Channel,Title,Description,StartTie,Date,Time,Day,Duration,Properties VALUES ";
+            string valuesFormat = "({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}),";
+
+            string sqlvalues = String.Empty;
+            foreach (ShowEntry showentry in showSchedule)
             {
-                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
-                {
-                    conn.Open();
-                    using (SQLiteCommand cmd = new SQLiteCommand(conn))
-                    {
-                        cmd.CommandText = "INSERT INTO TVGuide(Channel,Title,Description,StartTime,Date,Time,Day,Duration,Properties) VALUES (@Channel,@Title,@Description,@StartTime,@Date,@Time,@Day,@Duration,@Properties)";
-                        cmd.Prepare();
-                        foreach (ShowEntry showentry in showSchedule.Value)
-                        {
-                            cmd.Parameters.AddWithValue("@Channel", showSchedule.Key);
-                            cmd.Parameters.AddWithValue("@Title", showentry.Title);
-                            cmd.Parameters.AddWithValue("@Description", showentry.Description);
-                            cmd.Parameters.AddWithValue("@StartTime", showentry.StartTime);
-                            cmd.Parameters.AddWithValue("@Date", showentry.Date);
-                            cmd.Parameters.AddWithValue("@Time", showentry.Time);
-                            cmd.Parameters.AddWithValue("@Day", showentry.Day);
-                            cmd.Parameters.AddWithValue("@Duration", "");
-                            cmd.Parameters.AddWithValue("@Properties", showentry.Properties);
-                            result = cmd.ExecuteNonQuery();
-                        }
-                    }
-                    conn.Close();
-                }
+                sqlvalues = sqlvalues + string.Format(valuesFormat, showentry.Channel.Name, showentry.Title, showentry.Description, showentry.StartTime, showentry.Date, showentry.Time, showentry.Day, "", showentry.Properties);
             }
-            catch (SQLiteException ex)
+            String sql = sqlpre + sqlvalues;
+            SQLiteResult sqliteResult = SQLite.Exec(DatabasePath, sql);
+            if (!sqliteResult.success)
             {
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in AddShowSchedule. {0}", ex.Message));
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in AddShowSchedule. {0}", sqliteResult.message));
             }
-
-            return result;
-        }
-
-        internal int AddShowSchedule(List<ShowEntry> showSchedule)
-        {
-            int result = -1;
-            try
-            {
-                using (SQLiteConnection conn = new SQLiteConnection(ConnnectionString))
-                {
-                    string sql = "INSERT INTO TVGuide(Channel,Title,Description,StartTime,Date,Time,Day,Duration,Properties) VALUES (@Channel,@Title,@Description,@StartTime,@Date,@Time,@Day,@Duration,@Properties)";
-                    conn.Open();
-                    SQLiteResult sqliteResult = SQLite.Exec(DatabasePath, sql);
-                    if (!sqliteResult.success)
-                    {
-                        System.Windows.Forms.MessageBox.Show(String.Format("Error in AddShowSchedule. {0}", sqliteResult.message));
-                    }
-                    else
-                    {
-                        SQLite.CloseConnection(sqliteResult);
-                    }
-
-
-
-                    using (SQLiteCommand cmd = new SQLiteCommand(conn))
-                    {
-                        
-                        cmd.Prepare();
-                        foreach (ShowEntry showentry in showSchedule)
-                        {
-                            cmd.Parameters.AddWithValue("@Channel", showentry.Channel.Name);
-                            cmd.Parameters.AddWithValue("@Title", showentry.Title);
-                            cmd.Parameters.AddWithValue("@Description", showentry.Description);
-                            cmd.Parameters.AddWithValue("@StartTime", showentry.StartTime);
-                            cmd.Parameters.AddWithValue("@Date", showentry.Date);
-                            cmd.Parameters.AddWithValue("@Time", showentry.Time);
-                            cmd.Parameters.AddWithValue("@Day", showentry.Day);
-                            cmd.Parameters.AddWithValue("@Duration", "");
-                            cmd.Parameters.AddWithValue("@Properties", showentry.Properties);
-                            result = cmd.ExecuteNonQuery();
-                        }
-                    }
-                    conn.Close();
-                }
-            }
-            catch (SQLiteException ex)
-            {
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in AddShowSchedule. {0}", ex.Message));
-            }
-
-            return result;
         }
 
         internal void AddShowSchedule(ShowEntry showentry)
@@ -155,6 +83,7 @@ namespace MagyarTV
             string sql = string.Format("INSERT INTO TVGuide(Channel,Title,Description,StartTime,Date,Time,Day,Duration,Properties) VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8})",
                 showentry.Channel, showentry.Title, showentry.Description, showentry.StartTime, showentry.Date, showentry.Time, showentry.Day, "", showentry.Properties);
             SQLiteResult sqliteResult = SQLite.Exec(DatabasePath, sql);
+
             if (!sqliteResult.success)
             {
                 System.Windows.Forms.MessageBox.Show(String.Format("Error in AddShowSchedule. {0}", sqliteResult.message));
@@ -216,7 +145,7 @@ namespace MagyarTV
             var starttime = schedule.StartTime.ToShortTimeString();
             var endtime = schedule.EndTime.ToShortTimeString();
             var repeat = schedule.Repeat;
-            string sql = String.Format("INSERT INTO RecordingSchedules(Channel,StartTime,EndTime,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday,Repeat) VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11)",
+            string sql = String.Format("INSERT INTO RecordingSchedules(Channel,StartTime,EndTime,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday,Repeat) VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}",
                 channel, starttime, endtime, days["Monday"], days["Tuesday"], days["Wednesday"], days["Thursday"], days["Friday"], days["Saturday"], days["Sunday"], repeat);
             SQLiteResult sqliteResult = SQLite.Exec(DatabasePath, sql);
             if (!sqliteResult.success)

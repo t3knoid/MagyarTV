@@ -1,4 +1,4 @@
-﻿CREATE TABLE `RecordingSchedules` (
+﻿CREATE TABLE IF NOT EXISTS `RecordingSchedules` (
 	`ID`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`Schedule`	INTEGER,
 	`Channel`	TEXT,
@@ -13,7 +13,7 @@
 	`Sunday`	INTEGER,
 	`Repeat`	INTEGER
 );
-CREATE TABLE `TVGuide` (
+CREATE TABLE IF NOT EXISTS `TVGuide` (
 	`Channel`	INTEGER,
 	`Title`	TEXT,
 	`Description`	TEXT,
