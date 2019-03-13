@@ -119,8 +119,6 @@ namespace MagyarTV
                         SQLite.CloseConnection(sqliteResult);
                     }
 
-
-
                     using (SQLiteCommand cmd = new SQLiteCommand(conn))
                     {
                         
