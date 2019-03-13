@@ -69,7 +69,7 @@ namespace MagyarTV
         {
             string today = DateTime.Now.ToString("yyyyMMdd");
             string pathToCachedFile = Path.Combine(Path.GetTempPath(), "MagyarTV-TVGuide-" + channel.Name + "-" + DateTime.Now.ToString("yyyy-dd-M-HH") + ".html"); // Web page is fetched at the very least on top of each hour
-            HtmlAgilityPack.HtmlDocument htmlDocument = LoadFromCachedHtmlFile(pathToCachedFile);
+            HtmlAgilityPack.HtmlDocument htmlDocument = HtmlAgilityPackEx.LoadFromCachedHtmlFile(pathToCachedFile);
 
             if (htmlDocument == null) // If there is no cached file, load it from the given URL
             {
@@ -85,33 +85,6 @@ namespace MagyarTV
             List<ShowEntry> showScheduleList = GetShowList(channel, htmlDocument, dateSeparatorList);
 
             return showScheduleList;
-        }
-
-        /// <summary>
-        /// Load from a saved page
-        /// </summary>
-        /// <param name="cachedFile">Fully qualified path to the cache file.</param>
-        /// <returns></returns>
-        private HtmlAgilityPack.HtmlDocument LoadFromCachedHtmlFile(string cachedFile)
-        {
-            HtmlAgilityPack.HtmlWeb browser = new HtmlWeb();
-            HtmlAgilityPack.HtmlDocument htmlDocument = null;
-
-            if (File.Exists(cachedFile))
-            {
-                try
-                {
-                    htmlDocument = new HtmlAgilityPack.HtmlDocument();
-                    string cachedHtmlFileText = File.ReadAllText(cachedFile);
-                    htmlDocument.LoadHtml(cachedHtmlFileText);
-                }
-                catch (Exception ex)
-                {
-                    // Log failure here
-                }
-            }
-
-            return htmlDocument;
         }
 
         private List<ShowEntry> GetShowList(Channel channel, HtmlAgilityPack.HtmlDocument pageresult, List<string> dateSeparatorList)

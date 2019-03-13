@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Channel.cs" />
+    <Compile Include="HtmlAgilityPackEx.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MediaKlikk.cs" />
     <Compile Include="Database.cs" />
@@ -160,7 +161,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="parsers\.idea\parsers.iml" />
     <None Include="Properties\DataSources\Channel.datasource" />
     <None Include="Properties\DataSources\Channels.datasource" />
     <None Include="Properties\DataSources\Streams.datasource" />
@@ -181,24 +181,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_9qP_icon.ico" />
-    <Content Include="parsers\.idea\misc.xml" />
-    <Content Include="parsers\.idea\modules.xml" />
-    <Content Include="parsers\.idea\workspace.xml" />
-    <Content Include="parsers\mediaklikk.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="parsers\requirements.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Readme.txt" />
     <None Include="Resources\icon_9qP_icon.ico" />
     <None Include="sqls\CreateSchema.sqlite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="parsers\.idea\inspectionProfiles\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -209,8 +198,8 @@
   </Target>
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>if not exist "$(TargetDir)Python37" mkdir "$(TargetDir)Python37"
-xcopy /r /y /s /e "$(ProjectDir)Python_x86" "$(TargetDir)Python37"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\VideoLAN.LibVLC.Windows.3.0.6\build\VideoLAN.LibVLC.Windows.targets" Condition="Exists('..\packages\VideoLAN.LibVLC.Windows.3.0.6\build\VideoLAN.LibVLC.Windows.targets')" />
 </Project>

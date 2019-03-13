@@ -95,7 +95,7 @@ namespace MagyarTV
             currentChannel = channels["M1"];
             currentChannelButton = btM1;
             tVGuideToolStripMenuItem.Enabled = false;
-            bgwTVGuide.RunWorkerAsync();
+            //bgwTVGuide.RunWorkerAsync();
         }
 
         private void buttonMouseHover(object sender, EventArgs e)
@@ -338,7 +338,7 @@ namespace MagyarTV
                         };
                         currentChannel.IsRecording = true;
                         MediaKlikk mediaKlikk = new MediaKlikk();
-                        mediaRecorder.SetMedia(new Uri(mediaKlikk.GetChannelURI(currentChannel.IndexFeed)), mediaOptions);
+                        mediaRecorder.SetMedia(new Uri(mediaKlikk.GetChannelURI(currentChannel)), mediaOptions);
                         btRecord.ForeColor = Color.Red;
                         mediaRecorder.Play();
                         currentRecording.Channel = channel;
@@ -387,19 +387,16 @@ namespace MagyarTV
                 return;
             }
 
-            string error = String.Empty;
             MediaKlikk mediaKlikk = new MediaKlikk();
             try
             {
-                Uri url = new Uri(mediaKlikk.GetChannelURI(uri)); // Gets the m3u8 URL.
-
+                Uri url = new Uri(mediaKlikk.GetChannelURI(currentChannel));
 
                 if (worker.CancellationPending)
                 {
                     Logger.Info("Cancelling work.");
                     return;
                 }
-                error = mediaKlikk.StandardError.ToString();
                 Logger.Info(string.Format("URI={0}", url));
 
                 e.Result = url;
