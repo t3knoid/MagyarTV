@@ -24,3 +24,9 @@ CREATE TABLE IF NOT EXISTS `TVGuide` (
 	`Duration`	INTEGER,
 	`Properties`	TEXT
 );
+CREATE INDEX IF NOT EXISTS "TVGuideChannelIdx" ON "TVGuide" (
+	"Channel",
+	"Day",
+	"Date",
+	"Time"
+)
