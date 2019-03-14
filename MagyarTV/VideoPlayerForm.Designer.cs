@@ -62,7 +62,6 @@
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.bgwGetURI = new System.ComponentModel.BackgroundWorker();
             this.bgwRecording = new System.ComponentModel.BackgroundWorker();
-            this.bgwTVGuide = new System.ComponentModel.BackgroundWorker();
             this.channelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
@@ -409,13 +408,6 @@
             this.bgwRecording.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwRecording_DoWork);
             this.bgwRecording.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwRecording_RunWorkerCompleted);
             // 
-            // bgwTVGuide
-            // 
-            this.bgwTVGuide.WorkerReportsProgress = true;
-            this.bgwTVGuide.WorkerSupportsCancellation = true;
-            this.bgwTVGuide.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwTVGuide_DoWork);
-            this.bgwTVGuide.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwTVGuide_RunWorkerCompleted);
-            // 
             // channelBindingSource
             // 
             this.channelBindingSource.DataSource = typeof(MagyarTV.Channel);
@@ -483,7 +475,6 @@
         private System.Windows.Forms.ToolStripMenuItem resolutionToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker bgwGetURI;
         private System.ComponentModel.BackgroundWorker bgwRecording;
-        private System.ComponentModel.BackgroundWorker bgwTVGuide;
     }
 }
 

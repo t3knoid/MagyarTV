@@ -29,8 +29,28 @@ namespace MagyarTV
             Database database = new Database();
 
         }
+
+        private void btUpdate_Click(object sender, EventArgs e)
+        {
+            bgwTVGuide.RunWorkerAsync();
+        }
+
+        #region TVGuide Background worker
+        private void bgwTVGuide_DoWork(object sender, DoWorkEventArgs e)
+        {
+            MediaKlikk mediaKlikk = new MediaKlikk();
+            Dictionary<string, Channel> channels = mediaKlikk.GetChannels();
+
+            TVGuide tVGuide = new TVGuide();
+            tVGuide.Initialize(channels);
+        }
+
+        private void bgwTVGuide_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //tVGuideToolStripMenuItem.Enabled = true;
+        }
+        #endregion
+
     }
 
 }
-
-

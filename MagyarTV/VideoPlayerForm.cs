@@ -15,7 +15,6 @@ using System.Net;
 
 namespace MagyarTV
 {
-   
     public partial class VideoPlayerForm : Form
     {
         Channel currentChannel;
@@ -42,7 +41,6 @@ namespace MagyarTV
             // Default installation path of VideoLAN.LibVLC.Windows
             e.VlcLibDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
         }
-
         private void VideoPlayerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             switch (e.CloseReason)
@@ -77,13 +75,11 @@ namespace MagyarTV
                     break;
             }
         }
-
         private void VideoPlayerForm_Resize(object sender, EventArgs e)
         {
             // Keep the video control center on the mediaPlayer when resized
             this.flowLayoutPanel1.Location = new System.Drawing.Point((this.mediaPlayer.Width / 2) - (this.flowLayoutPanel1.Width / 2) + 12, this.mediaPlayer.Bottom + 6);
         }
-
         private void VideoPlayerForm_Load(object sender, EventArgs e)
         {
             // Center control buttons
@@ -94,10 +90,7 @@ namespace MagyarTV
             channels = mediaKlikk.GetChannels();
             currentChannel = channels["M1"];
             currentChannelButton = btM1;
-            tVGuideToolStripMenuItem.Enabled = false;
-            //bgwTVGuide.RunWorkerAsync();
         }
-
         private void buttonMouseHover(object sender, EventArgs e)
         {
             Button selectedButton = (Button)sender;
@@ -105,7 +98,6 @@ namespace MagyarTV
             selectedButton.Update();
             selectedButton.Refresh();
         }
-
         private void buttonMouseLeave(object sender, EventArgs e)
         {
             Button selectedButton = (Button)sender;
@@ -481,22 +473,6 @@ namespace MagyarTV
                     response.Close();
             }
 
-        }
-        #endregion
-
-        #region TVGuide Background worker
-        private void bgwTVGuide_DoWork(object sender, DoWorkEventArgs e)
-        {
-            MediaKlikk mediaKlikk = new MediaKlikk();
-            Dictionary<string, Channel> channels = mediaKlikk.GetChannels();
-
-            TVGuide tVGuide = new TVGuide();
-            tVGuide.Initialize(channels);
-        }
-
-        private void bgwTVGuide_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            tVGuideToolStripMenuItem.Enabled = true;
         }
         #endregion
     }

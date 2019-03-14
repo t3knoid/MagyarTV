@@ -34,6 +34,39 @@ namespace MagyarTV
             return sqliteResult;
         }
 
+        static public SQLiteResult Exec(string databasePath, string[] queryString)
+        {
+            SQLiteResult sqliteResult = new SQLiteResult();
+            string currentquery = string.Empty;
+            try
+            {
+                string connectionString = String.Format(connectionFormat, databasePath);
+                sqliteResult.connection = new SQLiteConnection(connectionString);
+                sqliteResult.command = new SQLiteCommand(sqliteResult.connection);
+                sqliteResult.connection.Open();
+                var transaction = sqliteResult.connection.BeginTransaction();
+                foreach (string query in queryString)
+                {
+                    currentquery = query;
+                    
+                    sqliteResult.command.CommandText = query;
+                    sqliteResult.command.ExecuteNonQuery();
+                }
+                transaction.Commit();
+                sqliteResult.success = true;
+            }
+            catch (Exception ex)
+            {
+                CloseConnection(sqliteResult);
+                sqliteResult.success = false;
+                System.Windows.Forms.MessageBox.Show(String.Format("Error in query, {0}. {1}", currentquery, ex.Message));
+                sqliteResult.message = String.Format("Error in query, {0}. {1}", currentquery, ex.Message);
+                sqliteResult.stacktrace = ex.StackTrace;
+            }
+            return sqliteResult;
+        }
+
+
         static public SQLiteResult Exec(string databasePath, string queryString)
         {
             SQLiteResult sqliteResult = new SQLiteResult();

@@ -27,8 +27,17 @@ namespace MagyarTV
         {
             var currentAssembly = Assembly.GetEntryAssembly();
             var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
-            string sql = Path.Combine(currentDirectory, "sqls", "CreateSchema.sqlite");
-
+            string sqlFile = Path.Combine(currentDirectory, "sqls", "CreateSchema.sqlite");
+            string sql = String.Empty;
+            try
+            {
+                sql = System.IO.File.ReadAllText(@sqlFile);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format("Failed to read {0}. {1}.",sqlFile,ex.Message));
+            }
+ 
             if (!Directory.Exists(this.DatabaseDir))
             {
                 try
@@ -49,7 +58,7 @@ namespace MagyarTV
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(string.Format("Failed to create database. {0}", ex.Message));
+                    throw ex;
                 }
             }
             SQLiteResult sqliteresult = SQLite.Exec(DatabasePath, sql);
@@ -60,19 +69,19 @@ namespace MagyarTV
         }
         internal void AddShowSchedule(List<ShowEntry> showSchedule)
         {
-            string sqlpre = "INSERT INTO TVGuide(Channel,Title,Description,StartTie,Date,Time,Day,Duration,Properties VALUES ";
-            string valuesFormat = "({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}),";
+            string sqlformat = "INSERT INTO TVGuide(Channel,Title,Description,StartTime,Date,Time,Day,Duration,Properties) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}')";
 
-            string sqlvalues = String.Empty;
-            foreach (ShowEntry showentry in showSchedule)
+            string[] sqls = new string[showSchedule.Count];
+            int i = 0;
+            for(i=0; i < showSchedule.Count; i++)
             {
-                sqlvalues = sqlvalues + string.Format(valuesFormat, showentry.Channel.Name, showentry.Title, showentry.Description, showentry.StartTime, showentry.Date, showentry.Time, showentry.Day, "", showentry.Properties);
+                var showentry = showSchedule[i];
+                sqls[i] = string.Format(sqlformat, showentry.Channel.Name, showentry.Title.Replace("'", "''"), showentry.Description.Replace("'", "''"), showentry.StartTime, showentry.Date, showentry.Time, showentry.Day, "", showentry.Properties);
             }
-            String sql = sqlpre + sqlvalues;
-            SQLiteResult sqliteResult = SQLite.Exec(DatabasePath, sql);
+            SQLiteResult sqliteResult = SQLite.Exec(DatabasePath, sqls);
             if (!sqliteResult.success)
             {
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in AddShowSchedule. {0}", sqliteResult.message));
+                throw new Exception(String.Format("Error in AddShowSchedule. {0}", sqliteResult.message));
             }
         }
         internal void AddShowSchedule(ShowEntry showentry)
@@ -97,7 +106,7 @@ namespace MagyarTV
             SQLiteResult sqliteresult = SQLite.Exec(DatabasePath, sql);
             if (!sqliteresult.success)
             {
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in EmptyTVGuideEntries. {0}", sqliteresult.message));
+                throw new Exception(String.Format("Error in EmptyTVGuideEntries. {0}", sqliteresult.message));
             }
         }
 
@@ -129,7 +138,7 @@ namespace MagyarTV
             }
             else
             { 
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", sqliteResult.message));
+                throw new Exception(String.Format("Error in GetScheduleItem. {0}", sqliteResult.message));
             }
 
             return scheduleItem;
@@ -147,7 +156,7 @@ namespace MagyarTV
             SQLiteResult sqliteResult = SQLite.Exec(DatabasePath, sql);
             if (!sqliteResult.success)
             { 
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", sqliteResult.message));
+                throw new Exception(String.Format("Error in GetScheduleItem. {0}", sqliteResult.message));
             }
         }
         public List<ScheduleItem> GetScheduleItems()
@@ -180,7 +189,7 @@ namespace MagyarTV
             }
             else 
             {
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", sqliteResult.message));
+                throw new Exception(String.Format("Error in GetScheduleItem. {0}", sqliteResult.message));
             }
 
             return scheduleItems;
@@ -192,7 +201,7 @@ namespace MagyarTV
             SQLiteResult sqliteResult = SQLite.Exec(DatabasePath, sql);
             if (!sqliteResult.success)
             { 
-                System.Windows.Forms.MessageBox.Show(String.Format("Error in GetScheduleItem. {0}", sqliteResult.message));
+                throw new Exception(String.Format("Error in GetScheduleItem. {0}", sqliteResult.message));
             }
             else
             {
